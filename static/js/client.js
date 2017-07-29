@@ -1,5 +1,5 @@
 // Processing the transcript and updating the argument
-import {NLP, contentTypes} from './nlp.js';
+import {NLP} from './nlp.js';
 
 /* The state of the argument
 Properties:
@@ -53,7 +53,6 @@ Properties:
 */
 class TopicElement {
     constructor(content, speakerId) {
-        this.type = NLP.determineContentType(content);
         this.speakerId = speakerId;
         this.content = content; // string
     }

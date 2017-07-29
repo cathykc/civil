@@ -1,23 +1,4 @@
-/* An element within a topic can be of three types:
-- claim: some statement that expresses a viewpoint
-- evidence: fact-based evidence to support a claim
-- rebuttal: a refutation of some other claim
-*/
-export const contentTypes = {
-    CLAIM: 'claim',
-    EVIDENCE: 'evidence',
-    REBUTTAL: 'rebuttal',
-}
-
 export class NLP {
-    /*
-    Determine whether a piece of content is a claim, evidence, or rebuttal
-    Use the text analysis API
-    */
-    determineContentType(text) {
-        return contentTypes.CLAIM;
-    }
-
     /*
     Use the current list of topics to determine which topic the content belongs
     to.
