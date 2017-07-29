@@ -1,12 +1,5 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Point from './point';
 
-// class Point extends React.Component {
-//   render() {
-//     return (
-//       <div className="point">
-//         <h1>Point {this.props.name}</h1>
-//       </div>
-//     );
-//   }
-// }
+ReactDOM.render(<Point/>, document.getElementById('point'));

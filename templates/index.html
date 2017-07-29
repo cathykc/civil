@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="{{ url_for('static', filename='js/index.js' )}}"></script>
   <script src="{{ url_for('static', filename='js/streaming.js' )}}"></script>
 </head>
 <body>
+
 	Hello world!
-	<Point />
+	<div id="point"></div>
+
+	<script type="text/javascript" src="{{ url_for('static', filename='bundle.js') }}"></script>
 </body>
 </html>
