@@ -1,5 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Point from './point';
+import Conversation from './conversation';
 
-ReactDOM.render(<Point/>, document.getElementById('point'));
+ReactDOM.render(<Conversation/>, document.getElementById('conversation'));
