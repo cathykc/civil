@@ -1,7 +1,7 @@
 // Processing the transcript and updating the argument
 import {NLP} from './nlp.js';
 
-/* The state of the argument
+/* The state of the argument.
 Properties:
 - topicList: array of Topic objects
 - recentWords: array of strings
@@ -33,25 +33,36 @@ class ArgumentState {
     }
 }
 
-/* A topic within the argument
+/* A topic within the argument.
 Properties:
-- elementList: array of TopicElement objects
+- subTopicList: array of SubTopic objects
 */
 class Topic {
     constructor() {
-        this.elementList = [];
+        this.subTopicList = [];
         this.topicText = null;
         this.topicTriggers = [];
     }
 }
 
-/* An element belonging to a topic
+/* A subtopic within the argument.
 Properties:
-- type: CLAIM, EVIDENCE, or REBUTTAL
+- topicElementList: an array of TopicElements (sentences from each person)
+*/
+class SubTopic {
+    constructor() {
+        this.topicElementList = [];
+        this.subTopicText = null;
+        this.subTopicTriggers = [];
+    }
+}
+
+/* An element belonging to a subtopic.
+Properties:
 - speakerId: 0 or 1
 - content: string (transcription of a user's voice)
 */
-class TopicElement {
+class SubTopicElement {
     constructor(content, speakerId) {
         this.speakerId = speakerId;
         this.content = content; // string
@@ -60,8 +71,8 @@ class TopicElement {
 
 const state = ArgumentState();
 
-function processSentence(sentence, speakerId) {
-    // process the sentence
-    const element = TopicElement(sentence, speakerId);
-
+/* Process the sentence given.
+*/
+function processWord(word, speakerId) {
+    // process the word
 }

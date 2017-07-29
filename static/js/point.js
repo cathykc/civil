@@ -1,9 +1,15 @@
 import React from 'react';
 
-var Point = React.createClass({
-  render() {
-    return <h1>This is a point</h1>;
-  }
-});
+class Point extends React.Component {
+	render() {
+		var pointClass = "point-container point-level-" + this.props.level;
+		return (
+			<div className={ pointClass }>
+				<h1>Speaker: { this.props.speaker_id }</h1>
+				<div className="point-content">Content: { this.props.content }</div>
+			</div>
+			);
+	}
+}
 
-export default Point;
+module.exports = Point;
