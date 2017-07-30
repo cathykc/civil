@@ -8,11 +8,6 @@ const TRIGGER_TYPES = {
 }
 
 const TRIGGER_WORDS = {
-    [TRIGGER_TYPES.BEGIN_DEBATE]: [
-        // 'let\'s begin',
-        // 'let\'s start',
-        // 'let us now begin',
-    ],
     [TRIGGER_TYPES.GO_TO_TOPIC]: [
         'go on to',
         'go onto',
@@ -62,33 +57,40 @@ const TRIGGER_WORDS = {
 const NLP = {
     /* Check for the trigger words in the given sentence
     */
-    checkTriggerWords: function(sentence) {
+    checkTriggerWords: function(sentence, fuzzy = false) {
+        if (fuzzy) {
+            // if fuzzy, use Fuse
+            const options = {
+                shouldSort: true,
+                includeScore: true,
+                threshold: 1.0, // may want to vary this
+                keys: ['triggers'],
+            };
+            // TRIGGER_WORDS should be something else
+            const fuse = new Fuse(TRIGGER_WORDS, options);
+            fuse.search(sentence);
+        }
         const sentenceLower = sentence.toLowerCase();
+        // iterate through the categories of triggers
         for(var key in TRIGGER_WORDS) {
+            // the words relevant to this trigger
             const matches = TRIGGER_WORDS[key];
+            // search for each such trigger word in the sentence
             for(var i = 0; i < matches.length; i++) {
                 if (sentenceLower.includes(matches[i])) {
-                    // Parse out important content
+                    // Find the trigger, return the rest of the string
                     var term;
-                    if (key === TRIGGER_TYPES.GO_TO_TOPIC) {
-                        const startIndex = sentence.indexOf(matches[i]) + matches[i].length;
-                        term = sentence.substr(startIndex);
-                    } else if (key === TRIGGER_TYPES.NEW_TOPIC) {
-                        const startIndex = sentence.indexOf(matches[i]) + matches[i].length;
-                        term = sentence.substr(startIndex);
-                    } else if (key === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
-                        const startIndex = sentence.indexOf(matches[i]) + matches[i].length;
-                        term = sentence.substr(startIndex);
-                    }
-
+                    const startIndex = sentence.indexOf(matches[i]) + matches[i].length;
+                    term = sentence.substr(startIndex);
                     return {
                         type: key,
-                        term: term ? term.trim() : null,
+                        term: term ? term.trim() : null, // remove whitespaces
                     }
                 }
             }
         }
 
+        // if none of the triggers matched, return NO_TRIGGER
         return {
             type: TRIGGER_TYPES.NO_TRIGGER,
         };
