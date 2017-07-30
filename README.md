@@ -14,7 +14,7 @@ Being able to have structured, constructive conversations with people who disagr
 
 ## Video of sample conversation
 
-![](http://g.recordit.co/BkXj7WpboR.gif)
+![](http://g.recordit.co/iS0ZWGW211.gif)
 
 
 ## Try it out!
