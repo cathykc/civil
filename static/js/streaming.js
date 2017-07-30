@@ -1,4 +1,5 @@
 var recognition = new webkitSpeechRecognition();
+
 recognition.continuous = true; // Suitable for dictation.
 recognition.interimResults =
     true; // If we want to start receiving results even if they are not final.
@@ -13,6 +14,7 @@ recognition.onstart = function() {
 recognition.onend = function() {
   // TODO: What to do when finished?
   console.log("onend")
+  recognition.start();
 };
 
 recognition.onresult = function(event) {
@@ -27,12 +29,13 @@ recognition.onresult = function(event) {
     if (event.results[i].isFinal) { // Final results
       console.log("final results: " +
                   event.results[i][0].transcript);
+    // TODO: Call function with final results.
 
     } else { //  interim...
-      console.log("interim results: " +
-                  event.results[i][0].transcript); // You can use these results
-                                                   // to give the user near real
-                                                   // time experience.
+      // console.log("interim results: " +
+      //             event.results[i][0].transcript); // You can use these results
+      //                                              // to give the user near real
+      //                                              // time experience.
     }
   }
 };
