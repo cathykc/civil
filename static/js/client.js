@@ -1,5 +1,5 @@
 // Processing the transcript and updating the argument
-import NLP from './nlp';
+// import NLP from './nlp';
 
 // The state of the argument.
 // Properties:
