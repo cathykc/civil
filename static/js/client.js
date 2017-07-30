@@ -8,7 +8,7 @@
 // constructor()
 class ArgumentState {
     constructor() {
-        this.rootTopic = new Topic("don't display me on ui!");
+        this.rootTopic = new Topic("don't display me on ui!", null);
         this.currentTopic = this.rootTopic;
     }
 }
@@ -18,10 +18,11 @@ class ArgumentState {
 // childrenList: nested children topics
 // content: list of [speakerID, string] tuples
 class Topic {
-    constructor(name) {
+    constructor(name, parent) {
         this.childrenList = [];
         this.content = [];
         this.name = name;
+        this.parent = parent;
     }
 }
 
@@ -41,20 +42,20 @@ function handleGoTo(name) {
 }
 
 function handleCreateNested(topicName) {
-  state.currentTopic.childrenList.push(new Topic(topicName));
+  state.currentTopic.childrenList.push(new Topic(topicName, currentTopic));
 }
 
 function handleCreateSameLevel(topicName) {
-
+  state.currentTopic.parent.childrenList.push(new Topic(topicName, currentTopic));
 }
 
 // Fills `state` with a sample for testing.
 function sampleState() {
-  var healthTopic = new Topic("health");
-  var externalityTopic = new Topic("externality");
+  var healthTopic = new Topic("health", state.rootTopic);
+  var externalityTopic = new Topic("externality", state.rootTopic);
 
-  var cognitiveHealthSubTopic = new Topic("cognitive health");
-  var respiratoryHealthSubTopic = new Topic("respiratory health");
+  var cognitiveHealthSubTopic = new Topic("cognitive health", healthTopic);
+  var respiratoryHealthSubTopic = new Topic("respiratory health", healthTopic);
   healthTopic.childrenList = [cognitiveHealthSubTopic, respiratoryHealthSubTopic];
 
   cognitiveHealthSubTopic.content = [[0, "smoking makes you dumb"], [1, "no it makes you smart"]]
