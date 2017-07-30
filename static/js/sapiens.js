@@ -20,6 +20,7 @@ const PREDICATES = {
     ['the evidence', 'shows'],
     ['study', 'shows'],
     ['the research', 'suggests'],
+    ['research', 'suggests'],
     ['studies', 'show'],
     ['researchers', 'say'],
   ],
@@ -106,13 +107,13 @@ const Sapiens = {
     if (data.type === ELEMENT_TYPE.CLAIM) {
       const predicate = relation.predicate.verb;
       const startIndex = sentence.indexOf(predicate) + predicate.length;
-      var claim = sentence.substr(startIndex).trim();
-      data.claim = claim;
+      var claim = sentence.substr(startIndex).trim().replace(".", "");
+      data.term = claim;
     } else if (data.type === ELEMENT_TYPE.EVIDENCE) {
       const predicate = relation.predicate.verb;
       const startIndex = sentence.indexOf(predicate) + predicate.length;
-      var evidence = sentence.substr(startIndex).trim();
-      data.evidence = evidence;
+      var evidence = sentence.substr(startIndex).trim().replace(".", "");
+      data.term = evidence;
     } 
 
     return data;

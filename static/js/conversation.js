@@ -13,13 +13,15 @@ class Conversation extends React.Component {
 	}
 
 	componentWillMount() {
-		updateHelper.updateConversation = (data) => {
+		updateHelper.updateConversation = (data, currentTopicChanged) => {
 			this.setState({value: data});
 
-			$('html, body').animate({
-		        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
-		    }, 800, function(){
-		    });
+			if (currentTopicChanged) {
+				$('html, body').animate({
+			        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
+			    }, 800, function(){
+			    });
+			}
 		};
 	}
 
@@ -33,10 +35,11 @@ class Conversation extends React.Component {
 								key={topic.id}
 								speaker_id={topic.info[0]}
 								speaker={topic.info[0] ? this.props.speakerTwo : this.props.speakerOne }
+								content={topic.info[1]}
 								level="0"
 								current_topic={topic.id == this.state.value.currentTopic.id}
-								name={topic.name}
-								is_topic={true}/>
+								is_topic={true}
+								name={topic.name}/>
 							{_.map(topic.content, (obj, key) => {
 								return (
 									<Point
@@ -46,6 +49,7 @@ class Conversation extends React.Component {
 										content={obj.text}
 										level="1"
 										type={obj.type}
+										term={obj.term}
 										current_topic={false}
 										is_topic={false}/>
 								);
@@ -57,6 +61,7 @@ class Conversation extends React.Component {
 											key={childTopic.id}
 											speaker_id={childTopic.info[0]}
 											speaker={childTopic.info[0] ? this.props.speakerTwo : this.props.speakerOne }
+											content={childTopic.info[1]}
 											level="1"
 											current_topic={childTopic.id == this.state.value.currentTopic.id}
 											name={childTopic.name}
@@ -70,6 +75,7 @@ class Conversation extends React.Component {
 													content={obj.text}
 													level="2"
 													type={obj.type}
+													term={obj.term}
 													current_topic={false}
 													is_topic={false}/>
 											);
