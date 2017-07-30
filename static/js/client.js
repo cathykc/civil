@@ -77,7 +77,7 @@ function appendTextToCurrentNode(text, speakerId) {
     }
     state.currentTopic.content.push(newContent);
     updateHelper.updateConversation(state);
-  }); 
+  });
 }
 
 function handleGoTo(name) {
@@ -154,6 +154,13 @@ function handleCreateNested(topicName, speakerId, sentence) {
 }
 
 function handleCreateSameLevel(topicName, speakerId, sentence) {
+
+    // this is a hacky mchackface
+    if (state.currentTopic.parent == null) {
+      handleCreateNested(topicName, speakerId, sentence);
+      return;
+    }
+
     // TODO: this function should receive intro as an argument
     console.log("creating new topic on the same level");
     const newTopic = new Topic(topicName, [speakerId, sentence], state.currentTopic.parent);
