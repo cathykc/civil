@@ -22,7 +22,7 @@ class Point extends React.Component {
 				<div className="point-content">{ this.props.content }</div>
 				<div className={'point-speaker point-speaker-' + this.props.speaker_id}>{ this.props.speaker }</div>
 				{showLabel && 
-					<div className='point-speaker'>Label: { this.props.type }</div>}
+					<div className={'point-label label-type-'+this.props.type}>{ titleize(this.props.type) }</div>}
 			</Panel>
 		);
 	}
