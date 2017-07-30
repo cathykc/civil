@@ -13,15 +13,15 @@ class Point extends React.Component {
 		pointClass = this.props.type ? pointClass + " " + this.props.type : pointClass;
 		var nameSection = this.props.name ? (<div className="point-name">{ titleize(this.props.name) }</div>) : null;
 
-		if (this.props.level === "2") {
-			console.log('type: ' + this.props.type);
-		}
+		const showLabel = this.props.level === "2";
 
 		return (
 			<Panel className={ pointClass }>
 				{ nameSection }
 				<div className="point-content">{ this.props.content }</div>
 				<div className='point-speaker'>Speaker: { this.props.speaker_id }</div>
+				{showLabel && 
+					<div className='point-speaker'>Label: { this.props.type }</div>}
 			</Panel>
 		);
 	}

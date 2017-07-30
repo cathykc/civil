@@ -14,14 +14,14 @@ const PREDICATES = {
     ['i', 'believe'],
     ['i', 'think'],
     ['i', 'contend'],
-    ['my point', 'is']
+    ['my point', 'is'],
   ],
   [ELEMENT_TYPE.EVIDENCE]: [
     ['the evidence', 'shows'],
     ['study', 'shows'],
     ['the research', 'suggests'],
     ['studies', 'show'],
-    ['researchers', 'say']
+    ['researchers', 'say'],
   ],
   [ELEMENT_TYPE.AGREE]: [
     ['i', 'agree'],
