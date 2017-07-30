@@ -8,8 +8,8 @@
 // constructor()
 class ArgumentState {
     constructor() {
-        this.topicList = [];
-        this.currentTopic = null;
+        this.rootTopic = new Topic("don't display me on ui!");
+        this.currentTopic = this.rootTopic;
     }
 }
 
@@ -33,7 +33,7 @@ function processSentence(sentence, speakerId) {
 }
 
 function appendTextToCurrentNode(text, speakerId) {
-
+  state.currentTopic.content.push([speakerId, text]);
 }
 
 function handleGoTo(name) {
@@ -41,7 +41,7 @@ function handleGoTo(name) {
 }
 
 function handleCreateNested(topicName) {
-
+  state.currentTopic.childrenList.push(new Topic(topicName));
 }
 
 function handleCreateSameLevel(topicName) {
@@ -61,6 +61,6 @@ function sampleState() {
   respiratoryHealthSubTopic.content = [[0, "smoking makes it hard to breathe"], [1, "you literally have to breathe to smoke"]]
 
   externalityTopic.content = [[0, "smoking makes less people want to live in the area"], [1, "I would never live anywhere where I couldn't smoke"]]
-  state.topicList = [healthTopic, externalityTopic];
+  state.rootTopic.childrenList = [healthTopic, externalityTopic];
   state.currentTopic = cognitiveHealthSubTopic;
 }
