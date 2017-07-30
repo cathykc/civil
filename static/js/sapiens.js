@@ -2,6 +2,7 @@
 const ELEMENT_TYPE = {
   CLAIM: "claim",
   EVIDENCE: "evidence",
+  REFUTATION: "refutation",
   DISAGREE: "disagree",
   AGREE: "agree",
   UNKNOWN: "unknown",
@@ -28,7 +29,9 @@ const PREDICATES = {
   [ELEMENT_TYPE.DISAGREE]: [
     ['i', 'disagree'],
   ],
-
+  [ELEMENT_TYPE.REFUTATION]: [
+    ['that', 'is', 'false'],
+  ]
 };
 
 // Wrapper around Plasticity Sapiens language engine
@@ -37,16 +40,17 @@ const Sapiens = {
     const API_ROOT_URL = "https://sapien-language-engine.api.plasticity.ai/?text=";
     const url = API_ROOT_URL + encodeURIComponent(text);
 
-    $.ajax({
-      url: url,
-      type: "GET",
-      success: (data) => {
-        const parsedData = this._parseContent(data);
-        console.log(parsedData);
-      },
-      failure: function(error) {
-      }
-    });
+    if (text) {
+      $.ajax({
+        url: url,
+        type: "GET",
+        success: (data) => {
+          const parsedData = this._parseContent(data);
+        },
+        failure: function(error) {
+        }
+      });
+    }
   },
 
   // Use PREDICATES to match an ELEMENT_TYPE
@@ -63,14 +67,21 @@ const Sapiens = {
           const predicate = relation.predicate;
           const predicateVerb = predicate.verb.toLowerCase();
           const object = relation.object;
-          console.log('subjectEntity: ' + subjectEntity);
-          console.log('predicateVerb: ' + predicateVerb);
+          var objectEntity;
+          if (object && object.type === "entity") {
+            objectEntity = object.entity;
+          }
 
           for (var key in PREDICATES) {
             const matches = PREDICATES[key];
             for (var z in matches) {
               const match = matches[z];
-              if (match[0] === subjectEntity && match[1] === predicateVerb) {
+              const matchAgainst = [subjectEntity, predicateVerb];
+              if (objectEntity && match.length > 2) {
+                matchAgainst.push(objectEntity);
+              }
+
+              if (this._arraysEqual(match, matchAgainst)) {
                 // Found match
                 return this._extendWithData({
                   type: key,
@@ -103,12 +114,25 @@ const Sapiens = {
     return data;
   },
 
+  _arraysEqual: function(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
+
+    for (var i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+        return false;
+      }
+    }
+    return true;
+  },
+
 };
 
-console.log("Beginning of Sapiens test");
+// console.log("Beginning of Sapiens test");
 
-const sentence = "the study shows that people should be doing things.";
-Sapiens.analyzeSentence(sentence);
+// const sentence = "the study shows that people should be doing things.";
+// Sapiens.analyzeSentence(sentence);
 
-console.log("End of Sapiens test");
+// console.log("End of Sapiens test");
 

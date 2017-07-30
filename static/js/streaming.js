@@ -29,7 +29,11 @@ recognition.onresult = function(event) {
       console.log("final results: " +
                   event.results[i][0].transcript);
       recognition.stop();
-    // TODO: Call function with final results.
+
+      const finalResult = event.results[i][0].transcript;
+      
+      // TODO(Ben): Somehow make speaker id variable. Currently just passing 0
+      processSentence(finalResult, 0);
 
     } else { //  interim...
       // console.log("interim results: " +
