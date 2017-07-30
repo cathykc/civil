@@ -39,3 +39,7 @@ recognition.onresult = function(event) {
     }
   }
 };
+
+setInterval(function(){
+  // make request
+}, 5000);

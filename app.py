@@ -1,12 +1,61 @@
 import os
 from flask import Flask, render_template, request
+import subprocess
+import threading
+import requests
+import time
 
 app = Flask(__name__)
 
+current_speaker = 0
 
 @app.route("/")
 def index():
     return render_template('index.html')
 
+@app.route("/get-speaker")
+def get_speaker():
+    return current_speaker
+
+def check_voice():
+    global current_speaker
+
+    speaker_zero_id = os.environ['SPEAKER_ZERO_ID'] # ben
+    speaker_one_id = os.environ['SPEAKER_ONE_ID'] # cathy
+
+    while True:
+        subprocess.call('rm recording.wav', shell=True)
+        subprocess.call('rm recording_final.wav', shell=True)
+        subprocess.call('sox -d recording.wav trim 0 4', shell=True)
+        subprocess.call('ffmpeg -i recording.wav -acodec pcm_s16le -ac 1 -ar 16000 recording_final.wav', shell=True)
+        with open('recording_final.wav', 'rb') as f:
+            r1 = requests.post(
+                'https://westus.api.cognitive.microsoft.com/spid/v1.0/identify?identificationProfileIds={},{}&shortAudio=true'.format(speaker_zero_id, speaker_one_id),
+                files={'recording_final.wav': f},
+                headers={'Ocp-Apim-Subscription-Key': os.environ['AZURE_KEY']}
+            )
+            query_url = r1.headers['Operation-Location']
+            r2 = None
+
+            count = 0
+            while r2 is None or r2.json()['status'] != 'succeeded':
+                count += 1
+                time.sleep(1.5)
+
+                r2 = requests.get(
+                    query_url,
+                    headers={'Ocp-Apim-Subscription-Key': '32180d1caa3f42d29f9306ef11cbebfe'}
+                )
+
+            speaker_id = r2.json()['processingResult']['identifiedProfileId']
+            if speaker_id == speaker_zero_id:
+                current_speaker = 0
+            elif speaker_id == speaker_one_id:
+                current_speaker = 1
+            else:
+                print 'neither speaker identified - keeping speaker as {}'.format(current_speaker)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    threading.Thread(target=check_voice).start()
+    check_voice()
+    app.run()
