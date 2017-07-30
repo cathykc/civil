@@ -152,8 +152,8 @@ function handleAddTopic(newTopic) {
 function sampleState() {
     // use the handlers for filling in the state
     const funcs = [
-        () => processSentence("lets talk about career", 0),
-        () => processSentence("lets talk about school", 1),
+        () => processSentence("lets talk about career decisions", 0),
+        () => processSentence("lets talk about importance of school", 1),
         () => processSentence("go to career", 0),
         () => processSentence("subtopic is software engineering", 0),
         () => processSentence("I believe the minimum education requirement for computer software engineering jobs is usually a bachelor's degree, the step is to complete your degree program.", 0),
