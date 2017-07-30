@@ -13,6 +13,10 @@
 	padding: 50px;
 }
 
+.current-topic {
+	background-color: red !important;
+}
+
 .point-level-0 {
 }
 

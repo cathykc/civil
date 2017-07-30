@@ -24,7 +24,6 @@ var Topic = (() => {
         this.content = []; // right now is both children and current
         this.id = nextId++;
         this.name = name;
-        console.log(info);
         this.info = info;
         this.parent = parent;
     }
