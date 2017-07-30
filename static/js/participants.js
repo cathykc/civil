@@ -27,10 +27,10 @@ class Participants extends React.Component {
 		return (
 			<div>
 				<div className="participants">
-					<div className="player-one">
+					<div className="speaker-one">
 						<input type="text" placeholder="Enter a participant's name (e.g. Ben Hsu)" onChange={this.updatePlayerOne.bind(this)}/>
 					</div>
-					<div className="player-two">
+					<div className="speaker-two">
 						<input type="text" placeholder="Enter a participant's name (e.g. Cathy Chen)" onChange={this.updatePlayerTwo.bind(this)}/>
 					</div>
 				</div>

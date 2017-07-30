@@ -14,6 +14,34 @@
 	font-family: 'Open Sans', sans-serif;
 }
 
+.participants {
+}
+
+input {
+	padding: 10px;
+}
+
+.speaker-one {
+	width: calc(50% - 10px);
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 20px;
+}
+
+.speaker-one input {
+	width: 100%;
+}
+
+.speaker-two {
+	width: calc(50% - 10px);
+	float: right;
+	margin-left: 10px;
+}
+
+.speaker-two input {
+	width: 100%;
+}
+
 .current-topic {
 	border: dashed 3px #5cb85c !important;
     background-color: rgba(92,184,92, 0.1) !important;
