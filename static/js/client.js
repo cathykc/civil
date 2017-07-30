@@ -39,12 +39,10 @@ const updateHelper = {};
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
     const trigger = NLP.checkTriggerWords(sentence);
-    console.log('trigger:');
-    console.log(trigger);
 
     // const analysis = Sapiens.analyzeSentence(sentence);
-    // console.log('analysis:');
-    // console.log(analysis);
+
+    currentTopicChanged = true;
 
     if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
         beginDebate(speakerId);
@@ -58,13 +56,13 @@ function processSentence(sentence, speakerId) {
         handleNextTopic();
     } else {
         appendTextToCurrentNode(sentence, speakerId);
+        currentTopicChanged = false;
     }
 
-    updateHelper.updateConversation(state);
+    updateHelper.updateConversation(state, currentTopicChanged);
 }
 
 function beginDebate(speakerId) {
-    console.log('Begin the debate!');
 }
 
 function appendTextToCurrentNode(text, speakerId) {
@@ -76,7 +74,7 @@ function appendTextToCurrentNode(text, speakerId) {
         term: parsedData.term ? parsedData.term : null,
     }
     state.currentTopic.content.push(newContent);
-    updateHelper.updateConversation(state);
+    updateHelper.updateConversation(state, false);
   });
 }
 
@@ -91,8 +89,6 @@ function handleGoTo(name) {
 
     const fuse = new Fuse(state.topicList, options);
     const result = fuse.search(name);
-    console.log("FUZZY SEARCH RESULT");
-    console.log(result);
     // set the current topic
     state.currentTopic = state.topicNamesToNodes[result[0].item.name];
 }
@@ -162,7 +158,6 @@ function handleCreateSameLevel(topicName, speakerId, sentence) {
     }
 
     // TODO: this function should receive intro as an argument
-    console.log("creating new topic on the same level");
     const newTopic = new Topic(topicName, [speakerId, sentence], state.currentTopic.parent);
     // push the new topic into the tree
     state.currentTopic.parent.childrenList.push(newTopic);

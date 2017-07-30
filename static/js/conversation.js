@@ -2,6 +2,7 @@ import React from 'react';
 import Point from './point';
 
 import _ from 'underscore';
+import { slugify } from 'underscore.string'
 
 class Conversation extends React.Component {
 	constructor(props) {
@@ -12,8 +13,15 @@ class Conversation extends React.Component {
 	}
 
 	componentWillMount() {
-		updateHelper.updateConversation = (data) => {
+		updateHelper.updateConversation = (data, currentTopicChanged) => {
 			this.setState({value: data});
+
+			if (currentTopicChanged) {
+				$('html, body').animate({
+			        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
+			    }, 800, function(){
+			    });
+			}
 		};
 	}
 
@@ -42,8 +50,6 @@ class Conversation extends React.Component {
 								);
 							})}
 							{ topic.childrenList.map((childTopic) => {
-								console.log('childTopic:');
-								console.log(childTopic);
 								return (
 									<div key={childTopic.id} className="child-topic">
 										<Point

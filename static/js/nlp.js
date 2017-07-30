@@ -47,8 +47,6 @@ const TRIGGER_WORDS = {
 //
 //     const fuse = new Fuse(state.topicList, options);
 //     const result = fuse.search(name);
-//     console.log("FUZZY SEARCH RESULT");
-//     console.log(result);
 //     // set the current topic
 //     state.currentTopic = state.topicNamesToNodes[result[0].item.name];
 // }

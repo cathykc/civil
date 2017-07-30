@@ -21,6 +21,10 @@ input {
 	padding: 10px;
 }
 
+a:hover {
+	text-decoration: normal !important;
+}
+
 .speaker-one {
 	width: calc(50% - 10px);
 	float: left;
