@@ -1,12 +1,12 @@
 const TriggerWords = ['topic', 'point'];
 
-const NLP = {
+export class NLP {
     /*
     Use the current list of topics to determine which topic the content belongs
     to.
     Use the text analysis API.
     */
-    determineTopic: function(content, topicList) {
+    determineTopic(content, topicList) {
         // for now, return the last topic
         return topicList.length - 1
         // eventually, return the actual topic
@@ -18,7 +18,7 @@ const NLP = {
         }
         // if no match return null
         return null;
-    },
+    }
 
     /*
     Check a sentence for trigger words.
@@ -26,7 +26,7 @@ const NLP = {
     creation of a new topic.
     sentence: a string
     */
-    checkForTriggerWordsInSentence: function(sentence) {
+    checkForTriggerWordsInSentence(sentence) {
         let result = {};
         let curIndices; // indices at which the current word is found
         let curIndex; // the current index in the sentence we are scanning
@@ -51,5 +51,3 @@ const NLP = {
         return result;
     }
 }
-
-module.exports = NLP;

@@ -1,5 +1,5 @@
 // Processing the transcript and updating the argument
-import {NLP} from './nlp.js';
+import NLP from './nlp';
 
 /* The state of the argument.
 Properties:
@@ -14,22 +14,21 @@ class ArgumentState {
         this.topicList = [];
         this.recentWords = [];
         this.currentSpeakerId = 0; // 0 or 1
+        this.currentTopic = 0;
     }
 
+    /* Navigate to a given topic by index.
+    */
+    navigateToTopic(topicIndex) {
+        this.currentTopic = topicIndex;
+    }
+
+    /* Add an element to the curent subtopic.
+    */
     addElement(content) {
-        const topicIndex = NLP.determineTopic(content, this.topicList);
-        if (topicIndex) {
-            this.addElementToTopic(content, topicIndex);
-        }
-        else {
-            // create a new topic, add that topic
-            const newTopic = Topic();
-            this.topicList.push(newTopic);
-        }
-    }
-
-    addElementToTopic(element, topicIndex) {
-        this.topicList[topicIndex].push(element);
+        const topic = this.topicList[this.currentTopic];
+        const subTopic = topic.subTopicList[topic.currentSubTopic];
+        subTopic.push(content);
     }
 }
 
@@ -42,12 +41,13 @@ class Topic {
         this.subTopicList = [];
         this.topicText = null;
         this.topicTriggers = [];
+        this.currentSubTopic = -1;
     }
 }
 
 /* A subtopic within the argument.
 Properties:
-- topicElementList: an array of TopicElements (sentences from each person)
+- topicElementList: an array of SubTopicElements
 */
 class SubTopic {
     constructor() {
@@ -69,9 +69,9 @@ class SubTopicElement {
     }
 }
 
-const state = ArgumentState();
+const state = new ArgumentState();
 
-/* Process the sentence given.
+/* Process the text given.
 */
 function processWord(word, speakerId) {
     // process the word
