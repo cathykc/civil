@@ -2,6 +2,7 @@
 const ELEMENT_TYPE = {
   CLAIM: "claim",
   EVIDENCE: "evidence",
+  REFUTATION: "refutation",
   DISAGREE: "disagree",
   AGREE: "agree",
   UNKNOWN: "unknown",
@@ -28,7 +29,9 @@ const PREDICATES = {
   [ELEMENT_TYPE.DISAGREE]: [
     ['i', 'disagree'],
   ],
-
+  [ELEMENT_TYPE.REFUTATION]: [
+    ['That', 'is', 'false'],
+  ]
 };
 
 // Wrapper around Plasticity Sapiens language engine
@@ -63,14 +66,21 @@ const Sapiens = {
           const predicate = relation.predicate;
           const predicateVerb = predicate.verb.toLowerCase();
           const object = relation.object;
-          console.log('subjectEntity: ' + subjectEntity);
-          console.log('predicateVerb: ' + predicateVerb);
+          var objectEntity;
+          if (object.type === "entity") {
+            objectEntity = object.entity;
+          }
 
           for (var key in PREDICATES) {
             const matches = PREDICATES[key];
             for (var z in matches) {
               const match = matches[z];
-              if (match[0] === subjectEntity && match[1] === predicateVerb) {
+              const matchAgainst = [subjectEntity, predicateVerb];
+              if (objectEntity && match.length > 2) {
+                matchAgainst.push(objectEntity);
+              }
+
+              if (match === matchAgainst) {
                 // Found match
                 return this._extendWithData({
                   type: key,

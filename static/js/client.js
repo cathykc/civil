@@ -37,23 +37,27 @@ const state = new ArgumentState();
 
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
-    const trigger = NLP.checkTriggerWords(sentence);
-    console.log('trigger:');
+    // const trigger = NLP.checkTriggerWords(sentence);
+    // console.log('trigger:');
+    // console.log(trigger);
+
+    const analysis = Sapiens.analyzeSentence(sentence);
+    console.log('analysis:');
     console.log(trigger);
 
-    if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
-        beginDebate(speakerId);
-    } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
-        handleGoTo(trigger.term);
-    } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
-        handleCreateSameLevel(trigger.term);
-    } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
-        handleCreateNested(trigger.term);
-    } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
-        handleNextTopic();
-    } else {
-        appendTextToCurrentNode(sentence, speakerId);
-    }
+    // if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
+    //     beginDebate(speakerId);
+    // } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
+    //     handleGoTo(trigger.term);
+    // } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
+    //     handleCreateSameLevel(trigger.term);
+    // } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
+    //     handleCreateNested(trigger.term);
+    // } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
+    //     handleNextTopic();
+    // } else {
+    //     appendTextToCurrentNode(sentence, speakerId);
+    // }
 }
 
 function beginDebate(speakerId) {
@@ -81,8 +85,8 @@ function handleGoTo(name) {
 }
 
 function handleNextTopic() {
-    
-},
+    // TODO(Kasra): Implement this - Ben
+}
 
 /* Find a node with the highest matching score
 TODO(kasrakoushan): probably not needed tbh
