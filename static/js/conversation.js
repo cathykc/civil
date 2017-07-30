@@ -5,7 +5,6 @@ class Conversation extends React.Component {
 	constructor() {
 		super();
 		sampleState();
-		console.log(state.rootTopic.childrenList);
 	}
 
 	render() {
