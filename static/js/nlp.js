@@ -17,15 +17,14 @@ const TRIGGER_WORDS = {
     ],
     [TRIGGER_TYPES.GO_TO_TOPIC]: [
         'go on to',
+        'go onto',
+        'goto',
+        'go to',
         'move on to',
         'go to the topic of',
-        'start discussing',
     ],
     [TRIGGER_TYPES.NEW_TOPIC_NESTED]: [
-        'within this topic let\'s discuss',
-        'discuss subtopic', 
-        'talk about subtopic',
-        'talk about subtopic of',
+        'subtopic',
     ],
     [TRIGGER_TYPES.NEW_TOPIC]: [
         'talk about',

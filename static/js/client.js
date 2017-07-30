@@ -51,9 +51,9 @@ function processSentence(sentence, speakerId) {
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
         handleGoTo(trigger.term);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
-        handleCreateSameLevel(trigger.term, speakerId);
+        handleCreateSameLevel(trigger.term, speakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
-        handleCreateNested(trigger.term, speakerId);
+        handleCreateNested(trigger.term, speakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
         handleNextTopic();
     } else {
@@ -126,19 +126,19 @@ function bfs(root, name) {
     return null;
 }
 
-function handleCreateNested(topicName, speakerId) {
+function handleCreateNested(topicName, speakerId, sentence) {
     // TODO: this function should receive intro as an argument
-    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], state.currentTopic);
+    const newTopic = new Topic(topicName, [speakerId, sentence], state.currentTopic);
     // push the new topic into the tree
     state.currentTopic.childrenList.push(newTopic);
     // add the topic to the list and set it as current
     handleAddTopic(newTopic);
 }
 
-function handleCreateSameLevel(topicName, speakerId) {
+function handleCreateSameLevel(topicName, speakerId, sentence) {
     // TODO: this function should receive intro as an argument
     console.log("creating new topic on the same level");
-    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], state.currentTopic.parent);
+    const newTopic = new Topic(topicName, [speakerId, sentence], state.currentTopic.parent);
     // push the new topic into the tree
     state.currentTopic.parent.childrenList.push(newTopic);
     // add the topic to the list and set it as current
@@ -157,13 +157,13 @@ function handleAddTopic(newTopic) {
 // Fills `state` with a sample for testing.
 function sampleState() {
     // use the handlers for filling in the state
-    handleCreateNested("health", 0);
-    handleCreateSameLevel("externality", 1);
+    handleCreateNested("health", 0, "let's talk about health");
+    handleCreateSameLevel("externality", 1, "let's talk about externalities");
     handleGoTo("health");
-    handleCreateNested("cognitive health", 0);
+    handleCreateNested("cognitive health", 0, "let's talk about subtopic cognitive heatlh");
     processSentence("smoking makes you dumb", 0);
     processSentence("no it makes you smart", 1);
-    handleCreateSameLevel("respiratory health", 0);
+    handleCreateSameLevel("respiratory health", 0, "let's talk about subtopic respiratory heatlh");
     processSentence("smoking makes it hard to breathe", 0);
     processSentence("you literally have to breathe to smoke", 1);
 }
