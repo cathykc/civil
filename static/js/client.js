@@ -1,4 +1,5 @@
 // Processing the transcript and updating the argument
+import Fuse from 'fuse.js';
 
 // The state of the argument.
 // Properties:
@@ -30,6 +31,8 @@ var Topic = (() => {
 })();
 
 const state = new ArgumentState();
+const topicList = []; // mapping of names -> topics
+const topicNamesToNodes = {};
 
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
@@ -59,15 +62,73 @@ function appendTextToCurrentNode(text, speakerId) {
 }
 
 function handleGoTo(name) {
+    // name: string that represents a topic, such as "health effects"
+    const options = {
+        shouldSort: true,
+        includeScore: true,
+        threshold: 0.6, // may want to vary this
+        keys: ['name'],
+    };
 
+    const fuse = new Fuse(topicList, options);
+    const result = fuse.search(name);
+    console.log(result);
+    // set the current topic
+    state.currentTopic = topicNamesToNodes[result[0].item.name];
+}
+
+/* Find a node with the highest matching score
+TODO(kasrakoushan): probably not needed tbh
+*/
+function bfsScore(root, name) {
+    // bfs that finds the max score
+    let current = {node: root, score: 1};
+    let best = current;
+    for (child in root.childrenList) {
+        current = bfs(child, name);
+        if (current.score > best.score) {
+            best = current;
+        }
+    }
+    return best;
+}
+
+/* Find a node with the given name (return null if none)
+TODO(kasrakoushan): probably not needed tbh
+*/
+function bfs(root, name) {
+    let current = root;
+    // check if current node matches
+    if (current.name == name) {
+        return current;
+    }
+    // check if children nodes match
+    for (child in current.childrenList) {
+        current = bfs(child, name);
+        if (current !== null) {
+            return current;
+        }
+    }
+    return null;
 }
 
 function handleCreateNested(topicName) {
-  state.currentTopic.childrenList.push(new Topic(topicName, currentTopic));
+    const newTopic = new Topic(topicName, currentTopic);
+    state.currentTopic.childrenList.push(newTopic);
+    handleAddTopic(newTopic);
 }
 
 function handleCreateSameLevel(topicName) {
-  state.currentTopic.parent.childrenList.push(new Topic(topicName, currentTopic));
+    new Topic(topicName, currentTopic);
+    state.currentTopic.parent.childrenList.push(newTopic);
+    handleAddTopic(newTopic);
+
+}
+
+function handleAddTopic(newTopic) {
+    // add the topic to mapping of names -> topics
+    topicList.push({name: newTopic.name, topic: newTopic});
+    topicNamesToNodes[newTopic.name] = newTopic;
 }
 
 // Fills `state` with a sample for testing.
