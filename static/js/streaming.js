@@ -28,6 +28,7 @@ recognition.onresult = function(event) {
     if (event.results[i].isFinal) { // Final results
       console.log("final results: " +
                   event.results[i][0].transcript);
+      recognition.stop();
     // TODO: Call function with final results.
 
     } else { //  interim...
