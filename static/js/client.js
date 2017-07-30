@@ -7,8 +7,8 @@
 // constructor()
 class ArgumentState {
     constructor() {
-        this.topicList = [];
-        this.currentTopic = null;
+        this.rootTopic = new Topic("don't display me on ui!", null);
+        this.currentTopic = this.rootTopic;
     }
 }
 
@@ -17,10 +17,11 @@ class ArgumentState {
 // childrenList: nested children topics
 // content: list of [speakerID, string] tuples
 class Topic {
-    constructor(name) {
+    constructor(name, parent) {
         this.childrenList = [];
         this.content = [];
         this.name = name;
+        this.parent = parent;
     }
 }
 
@@ -32,7 +33,7 @@ function processSentence(sentence, speakerId) {
 }
 
 function appendTextToCurrentNode(text, speakerId) {
-
+  state.currentTopic.content.push([speakerId, text]);
 }
 
 function handleGoTo(name) {
@@ -40,26 +41,26 @@ function handleGoTo(name) {
 }
 
 function handleCreateNested(topicName) {
-
+  state.currentTopic.childrenList.push(new Topic(topicName, currentTopic));
 }
 
 function handleCreateSameLevel(topicName) {
-
+  state.currentTopic.parent.childrenList.push(new Topic(topicName, currentTopic));
 }
 
 // Fills `state` with a sample for testing.
 function sampleState() {
-  var healthTopic = new Topic("health");
-  var externalityTopic = new Topic("externality");
+  var healthTopic = new Topic("health", state.rootTopic);
+  var externalityTopic = new Topic("externality", state.rootTopic);
 
-  var cognitiveHealthSubTopic = new Topic("cognitive health");
-  var respiratoryHealthSubTopic = new Topic("respiratory health");
+  var cognitiveHealthSubTopic = new Topic("cognitive health", healthTopic);
+  var respiratoryHealthSubTopic = new Topic("respiratory health", healthTopic);
   healthTopic.childrenList = [cognitiveHealthSubTopic, respiratoryHealthSubTopic];
 
   cognitiveHealthSubTopic.content = [[0, "smoking makes you dumb"], [1, "no it makes you smart"]]
   respiratoryHealthSubTopic.content = [[0, "smoking makes it hard to breathe"], [1, "you literally have to breathe to smoke"]]
 
   externalityTopic.content = [[0, "smoking makes less people want to live in the area"], [1, "I would never live anywhere where I couldn't smoke"]]
-  state.topicList = [healthTopic, externalityTopic];
+  state.rootTopic.childrenList = [healthTopic, externalityTopic];
   state.currentTopic = cognitiveHealthSubTopic;
 }
