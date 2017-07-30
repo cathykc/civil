@@ -48,12 +48,12 @@ def check_voice():
             speaker_id = r2.json()['processingResult']['identifiedProfileId']
             if speaker_id == speaker_zero_id:
                 current_speaker = 0
-                print '****** speaker is ben ******'
+                print('****** speaker is ben ******')
             elif speaker_id == speaker_one_id:
-                print '****** speaker is cathy ******'
+                print('****** speaker is cathy ******')
                 current_speaker = 1
             else:
-                print '****** neither speaker identified - keeping speaker as {} ******'.format(current_speaker)
+                print('****** neither speaker identified - keeping speaker as {} ******'.format(current_speaker))
 
 if __name__ == '__main__':
     # threading.Thread(target=check_voice).start()
