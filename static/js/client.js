@@ -68,7 +68,16 @@ function beginDebate(speakerId) {
 }
 
 function appendTextToCurrentNode(text, speakerId) {
-  state.currentTopic.content.push([speakerId, text]);
+  Sapiens.analyzeSentence(text, function(parsedData) {
+    const newContent = {
+        speaker: speakerId,
+        text: text,
+        type: parsedData.type,
+        term: parsedData.term ? parsedData.term : null,
+    }
+    state.currentTopic.content.push(newContent);
+    updateHelper.updateConversation(state);
+  }); 
 }
 
 function handleGoTo(name) {
@@ -175,4 +184,7 @@ function sampleState() {
     handleCreateSameLevel("respiratory health", 0);
     processSentence("smoking makes it hard to breathe", 0);
     processSentence("you literally have to breathe to smoke", 1);
+    // handleGoTo("cognitive health");
+    // processSentence("i believe that something is true", 0);
+    // processSentence("i disagree with your statement", 1);
 }
