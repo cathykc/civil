@@ -158,16 +158,16 @@ function sampleState() {
         () => processSentence("lets talk about school", 1),
         () => processSentence("go to career", 0),
         () => processSentence("subtopic is software engineering", 0),
-        () => processSentence("i believe tbh software engineering is for plebz", 0),
-        () => processSentence("i disagree lmao nah u trippin bruh", 1),
+        () => processSentence("I believe the minimum education requirement for computer software engineering jobs is usually a bachelor's degree, the step is to complete your degree program.", 0),
+        () => processSentence("I disagree coding conventions are a set of guidelines for a specific programming language that recommend programming style, practices, and methods for each aspect of a program written in that language", 1),
         () => processSentence("go to career", 1),
-        () => processSentence("studies show 15 % of people do whatever they want", 1),
+        () => processSentence("Studies show 15% of people do whatever they want", 1),
         () => processSentence("go to school", 0),
-        () => processSentence("tbh i LOVE school", 0),
+        () => processSentence("Attending college provides opportunities for graduates which are not as widespread to those who have not received a higher education", 0),
         () => processSentence("subtopic of homework", 1),
-        () => processSentence("tbh i hate homework but school is ok", 1),
-        () => processSentence("i believe that something is true", 1),
-        () => processSentence("the evidence shows something different", 1),
+        () => processSentence("Does not improve academic performance among children and may improve academic skills among older students", 1),
+        () => processSentence("I believe that it creates stress for students and their parents and reduces the amount of time that students could spend outdoors, exercising, playing sports, working, sleeping or in other activities", 1),
+        () => processSentence("The evidence shows that more than half of students get paid more.", 1),
     ];
     var cur = 0;
     function runUITests() {
