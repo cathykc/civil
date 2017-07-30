@@ -40,8 +40,6 @@ const updateHelper = {};
 function processSentence(sentence, speakerId) {
     const trigger = NLP.checkTriggerWords(sentence);
 
-    // const analysis = Sapiens.analyzeSentence(sentence);
-
     if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
         beginDebate(speakerId);
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
@@ -52,11 +50,8 @@ function processSentence(sentence, speakerId) {
         handleCreateNested(trigger.term, speakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
         handleNextTopic();
-        appendTextToCurrentNode(sentence, speakerId);
     } else {
-        console.log('---APPENDING---');
         appendTextToCurrentNode(sentence, speakerId);
-        currentTopicChanged = false;
     }
 
     updateHelper.updateConversation(state);
@@ -72,7 +67,7 @@ function appendTextToCurrentNode(text, speakerId) {
         text: text,
         type: parsedData.type,
         term: parsedData.term ? parsedData.term : null,
-    }
+    };
     state.currentTopic.content.push(newContent);
     updateHelper.updateConversation(state);
   });
@@ -163,14 +158,16 @@ function sampleState() {
         () => processSentence("lets talk about school", 1),
         () => processSentence("go to career", 0),
         () => processSentence("subtopic is software engineering", 0),
-        () => processSentence("tbh software engineering is for plebz", 0),
-        () => processSentence("lmao nah u trippin bruh", 1),
+        () => processSentence("i believe tbh software engineering is for plebz", 0),
+        () => processSentence("i disagree lmao nah u trippin bruh", 1),
         () => processSentence("go to career", 1),
-        () => processSentence("tbh all careerz are for plebz", 1),
+        () => processSentence("studies show 15 % of people do whatever they want", 1),
         () => processSentence("go to school", 0),
         () => processSentence("tbh i LOVE school", 0),
         () => processSentence("subtopic of homework", 1),
-        () => processSentence("tbh i hate homework but school is ok", 1)
+        () => processSentence("tbh i hate homework but school is ok", 1),
+        () => processSentence("i believe that something is true", 1),
+        () => processSentence("the evidence shows something different", 1),
     ];
     var cur = 0;
     function runUITests() {

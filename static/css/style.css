@@ -51,7 +51,7 @@ a:hover {
 }
 
 .current-topic {
-	border: dashed 3px #5cb85c !important;
+	border: dotted 3px #5cb85c !important;
     background-color: rgba(92,184,92, 0.1) !important;
 }
 
@@ -151,12 +151,17 @@ a:hover {
 	background-color: #F0F5FA !important;
 }
 
+.highlight-evidence {
+  color: #0099CC;
+  font-weight: bold;
+}
+
 .point-speaker-0 {
-	border: dotted 2px #FF8800;
+	border: dotted 1px #FF8800;
 }
 
 .point-speaker-1 {
-	border: dotted 2px #5bc0de;
+	border: dotted 1px #5bc0de;
 }
 
 .record {

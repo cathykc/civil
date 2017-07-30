@@ -35,8 +35,8 @@ class Conversation extends React.Component {
 								speaker={topic.info[0] ? this.props.speakerTwo : this.props.speakerOne }
 								level="0"
 								current_topic={topic.id == this.state.value.currentTopic.id}
-								name={topic.name}
-								is_topic={true}/>
+								is_topic={true}
+								name={topic.name}/>
 							{_.map(topic.content, (obj, key) => {
 								return (
 									<Point
@@ -46,6 +46,7 @@ class Conversation extends React.Component {
 										content={obj.text}
 										level="1"
 										type={obj.type}
+										term={obj.term}
 										current_topic={false}
 										is_topic={false}/>
 								);
@@ -70,6 +71,7 @@ class Conversation extends React.Component {
 													content={obj.text}
 													level="2"
 													type={obj.type}
+													term={obj.term}
 													current_topic={false}
 													is_topic={false}/>
 											);
