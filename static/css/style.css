@@ -13,6 +13,18 @@
 	padding: 50px;
 }
 
+.point-level-0 {
+	background: red;
+}
+
+.point-level-1 {
+	background: yellow;
+}
+
+.point-level-2 {
+	background: grey;
+}
+
 #record {
 	margin-bottom: 20px;
 }
