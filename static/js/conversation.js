@@ -61,7 +61,7 @@ class Conversation extends React.Component {
 											content={childTopic.info[1]}
 											level="1"
 											current_topic={childTopic.id == this.state.value.currentTopic.id}
-											name={	childTopic.name}/>
+											name={childTopic.name}/>
 										{ _.map(childTopic.content, (obj, key) => {
 											return (
 												<Point

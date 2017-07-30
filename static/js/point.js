@@ -14,7 +14,7 @@ class Point extends React.Component {
 		pointClass = this.props.type ? pointClass + " " + this.props.type : pointClass;
 		var nameSection = this.props.name ? (<div className="point-name">{ titleize(this.props.name) }</div>) : null;
 
-		const showLabel = this.props.level === "2";
+		const showLabel = this.props.type != "unknown";
 
 		return (
 			<Panel className={ pointClass } id={ slugify(this.props.name) }>
