@@ -2,7 +2,6 @@ var webpack = require('webpack');
 module.exports = {
   entry: [
     "./static/js/index.js",
-    "./static/js/streaming.js",
   ],
   output: {
     path: __dirname + '/static',
