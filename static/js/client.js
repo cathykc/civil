@@ -105,41 +105,6 @@ function handleNextTopic() {
     }
 }
 
-/* Find a node with the highest matching score
-TODO(kasrakoushan): probably not needed tbh
-*/
-function bfsScore(root, name) {
-    // bfs that finds the max score
-    let current = {node: root, score: 1};
-    let best = current;
-    for (child in root.childrenList) {
-        current = bfs(child, name);
-        if (current.score > best.score) {
-            best = current;
-        }
-    }
-    return best;
-}
-
-/* Find a node with the given name (return null if none)
-TODO(kasrakoushan): probably not needed tbh
-*/
-function bfs(root, name) {
-    let current = root;
-    // check if current node matches
-    if (current.name == name) {
-        return current;
-    }
-    // check if children nodes match
-    for (child in current.childrenList) {
-        current = bfs(child, name);
-        if (current !== null) {
-            return current;
-        }
-    }
-    return null;
-}
-
 function handleCreateNested(topicName, speakerId, sentence) {
     // TODO: this function should receive intro as an argument
     const newTopic = new Topic(topicName, [speakerId, sentence], state.currentTopic);
