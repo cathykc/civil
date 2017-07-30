@@ -48,13 +48,16 @@ function processSentence(sentence, speakerId) {
         beginDebate(speakerId);
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
         handleGoTo(trigger.term);
+        appendTextToCurrentNode(sentence, speakerId);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
         handleCreateSameLevel(trigger.term, speakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
         handleCreateNested(trigger.term, speakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
         handleNextTopic();
+        appendTextToCurrentNode(sentence, speakerId);
     } else {
+        console.log('---APPENDING---');
         appendTextToCurrentNode(sentence, speakerId);
         currentTopicChanged = false;
     }
@@ -144,7 +147,23 @@ function handleCreateNested(topicName, speakerId, sentence) {
     // TODO: this function should receive intro as an argument
     const newTopic = new Topic(topicName, [speakerId, sentence], state.currentTopic);
     // push the new topic into the tree
-    state.currentTopic.childrenList.push(newTopic);
+
+    // horrible code i know
+    if(state.currentTopic.parent !== undefined) {
+        if (state.currentTopic.parent.parent !== undefined) {
+            if (state.currentTopic.parent.parent.parent === undefined) {
+                state.currentTopic.parent.childrenList.push(newTopic);
+            } else {
+                state.currentTopic.childrenList.push(newTopic);
+            }            
+        }
+        else {
+            state.currentTopic.childrenList.push(newTopic);
+        }
+    } else {
+        state.currentTopic.childrenList.push(newTopic);
+    }
+    
     // add the topic to the list and set it as current
     handleAddTopic(newTopic);
 }
