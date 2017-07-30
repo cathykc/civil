@@ -47,7 +47,7 @@ function processSentence(sentence, speakerId) {
         handleGoTo(trigger.term);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
         handleCreateSameLevel(trigger.term);
-    } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
+    } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
         handleCreateNested(trigger.term);
     } else {
         appendTextToCurrentNode(sentence, speakerId);

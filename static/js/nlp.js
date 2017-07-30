@@ -4,7 +4,7 @@ const TRIGGER_TYPES = {
     BEGIN_DEBATE: "begin_debate",
     GO_TO_TOPIC: "go_to_topic",
     NEW_TOPIC: "new_topic",
-    NEW_TOPIC: "new_topic_nested",
+    NEW_TOPIC_NESTED: "new_topic_nested",
     NEXT_TOPIC: "next_topic",
     NO_TRIGGER: "no_trigger",
 }
