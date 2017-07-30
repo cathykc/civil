@@ -14,15 +14,14 @@
 }
 
 .point-level-0 {
-	background: red;
 }
 
 .point-level-1 {
-	background: yellow;
+	margin-left: 30px;
 }
 
 .point-level-2 {
-	background: grey;
+	margin-left: 60px;
 }
 
 #record {
