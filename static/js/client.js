@@ -49,6 +49,8 @@ function processSentence(sentence, speakerId) {
         handleCreateSameLevel(trigger.term);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
         handleCreateNested(trigger.term);
+    } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
+        handleNextTopic();
     } else {
         appendTextToCurrentNode(sentence, speakerId);
     }
@@ -77,6 +79,10 @@ function handleGoTo(name) {
     // set the current topic
     state.currentTopic = state.topicNamesToNodes[result[0].item.name];
 }
+
+function handleNextTopic() {
+    
+},
 
 /* Find a node with the highest matching score
 TODO(kasrakoushan): probably not needed tbh
