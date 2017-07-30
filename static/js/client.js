@@ -9,6 +9,7 @@
 class ArgumentState {
     constructor() {
         this.topicList = [];
+        this.currentTopic = null;
     }
 }
 
@@ -44,4 +45,5 @@ function sampleState() {
 
   externalityTopic.content = [[0, "smoking makes less people want to live in the area"], [1, "I would never live anywhere where I couldn't smoke"]]
   state.topicList = [healthTopic, externalityTopic];
+  state.currentTopic = cognitiveHealthSubTopic;
 }
