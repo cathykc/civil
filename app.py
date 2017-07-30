@@ -15,7 +15,7 @@ def index():
 
 @app.route("/get-speaker")
 def get_speaker():
-    return current_speaker
+    return str(current_speaker)
 
 def check_voice():
     global current_speaker
@@ -56,5 +56,5 @@ def check_voice():
                 print '****** neither speaker identified - keeping speaker as {} ******'.format(current_speaker)
 
 if __name__ == '__main__':
-    threading.Thread(target=check_voice).start()
+    # threading.Thread(target=check_voice).start()
     app.run(debug=True, use_reloader=False)

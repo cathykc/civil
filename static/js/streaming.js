@@ -31,9 +31,17 @@ recognition.onresult = function(event) {
       recognition.stop();
 
       const finalResult = event.results[i][0].transcript;
-      
-      // TODO(Ben): Somehow make speaker id variable. Currently just passing 0
-      processSentence(finalResult, 0);
+
+      var speaker;
+      $.ajax({
+        url: '/get-speaker',
+        type: "GET",
+        success: function(data) {
+          console.log("speaker is " + data);
+          speaker = parseInt(data);
+          processSentence(finalResult, speaker);
+        },
+      });
 
     } else { //  interim...
       // console.log("interim results: " +
