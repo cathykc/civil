@@ -51,6 +51,7 @@ class Conversation extends React.Component {
 													speaker_id={obj.speaker} 
 													content={obj.text} 
 													level="2" 
+													type={obj.type}
 													current_topic={false}/>
 											);
 										}) }
