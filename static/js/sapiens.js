@@ -64,7 +64,10 @@ const Sapiens = {
         for (var k = 0; k < alternative.relations.length; k++) {
           const relation = alternative.relations[k];
           const subject = relation.subject;
-          const subjectEntity = subject.entity.toLowerCase();
+          var subjectEntity;
+          if (subject) {
+            subjectEntity = subject.entity.toLowerCase();
+          }
           const predicate = relation.predicate;
           const predicateVerb = predicate.verb.toLowerCase();
           const object = relation.object;
