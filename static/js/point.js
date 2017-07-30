@@ -3,6 +3,26 @@ import { Panel } from 'react-bootstrap';
 import { titleize, slugify } from 'underscore.string'
 
 class Point extends React.Component {
+
+	constructor(props, context) {
+		super(props, context);
+		this.state = {
+			type: null,
+			term: null,
+		};
+	}
+
+	componentWillMount() {
+		if (this.props.flag) {
+			this.props.func(this.props.content, (parsedData) => {
+		    this.setState({
+		    	type: parsedData.type,
+		    	term: parsedData.term,
+		    });
+		  });
+		}
+	}
+
 	render() {
 		var pointClass = "point-container point-level-" + this.props.level;
 
@@ -12,19 +32,19 @@ class Point extends React.Component {
 		pointClass = this.props.is_topic ? pointClass + " point-topic" : pointClass + " point-argument"
 
 		// Style class w/ specific element 
-		pointClass = this.props.type ? pointClass + " " + this.props.type : pointClass;
+		pointClass = this.state.type ? pointClass + " " + this.state.type : pointClass;
 		var nameSection = this.props.name ? (<div className="point-name">{ titleize(this.props.name) }</div>) : null;
 
-		const showLabel = this.props.type != "unknown" && this.props.is_topic == false;
+		const showLabel = this.state.type != "unknown" && this.props.is_topic == false;
 
 		// Highlight evidence
 		var content;
-		if (this.props.type == "evidence") {
-			const prefix = this.props.content.replace(this.props.term, "");
+		if (this.state.type == "evidence") {
+			const prefix = this.props.content.replace(this.state.term, "");
 			content = (
 				<div>
 					<span>{prefix}</span>
-					<span className="highlight-evidence">{this.props.term}</span>
+					<span className="highlight-evidence">{this.state.term}</span>
 				</div>
 			);
 		} else {
@@ -37,7 +57,7 @@ class Point extends React.Component {
 				<div className="point-content">{ content }</div>
 				<div className={'point-speaker point-speaker-' + this.props.speaker_id}>{ this.props.speaker }</div>
 				{showLabel && 
-					<div className={'point-label label-type-'+this.props.type}>{ titleize(this.props.type) }</div>}
+					<div className={'point-label label-type-'+this.state.type}>{ titleize(this.state.type) }</div>}
 			</Panel>
 		);
 	}

@@ -45,8 +45,8 @@ class Conversation extends React.Component {
 										speaker={obj.speaker ? this.props.speakerTwo : this.props.speakerOne }
 										content={obj.text}
 										level="1"
-										type={obj.type}
-										term={obj.term}
+										flag={obj.sapiensFlag}
+										func={obj.func}
 										current_topic={false}
 										is_topic={false}/>
 								);
@@ -70,8 +70,8 @@ class Conversation extends React.Component {
 													speaker={obj.speaker ? this.props.speakerTwo : this.props.speakerOne }
 													content={obj.text}
 													level="2"
-													type={obj.type}
-													term={obj.term}
+													flag={obj.sapiensFlag}
+													func={obj.func}
 													current_topic={false}
 													is_topic={false}/>
 											);

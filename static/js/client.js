@@ -61,16 +61,14 @@ function beginDebate(speakerId) {
 }
 
 function appendTextToCurrentNode(text, speakerId) {
-  Sapiens.analyzeSentence(text, function(parsedData) {
-    const newContent = {
-        speaker: speakerId,
-        text: text,
-        type: parsedData.type,
-        term: parsedData.term ? parsedData.term : null,
+  const newContent = {
+    speaker: speakerId,
+    text: text,
+    sapiensFlag: true,
+    func: Sapiens.analyzeSentence,
     };
-    state.currentTopic.content.push(newContent);
-    updateHelper.updateConversation(state);
-  });
+  state.currentTopic.content.push(newContent);
+  updateHelper.updateConversation(state); 
 }
 
 function handleGoTo(name) {
