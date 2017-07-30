@@ -9,6 +9,10 @@
 	font-size: 40px;
 }
 
+button {
+	border-width: 0px !important;
+}
+
 #content {
 	padding: 50px 150px;
 	font-family: 'Open Sans', sans-serif;
@@ -124,19 +128,23 @@ a:hover {
 }
 
 .speaker-one-panel.point-argument {
+	border-width: 0px;
 	border-left: solid 10px #FF8800 !important;
 }
 
 .speaker-one-panel.point-topic {
-	border-left: solid 3px #FF8800 !important;
+	border-color: #EFEFEF;
+	border-left: solid 2px #FF8800 !important;
 }
 
 .speaker-two-panel.point-argument {
+	border-width: 0px;
 	border-left: solid 10px #5bc0de !important;
 }
 
 .speaker-two-panel.point-topic {
-	border-left: solid 3px #5bc0de !important;
+	border-color: #EFEFEF;
+	border-left: solid 2px #5bc0de !important;
 }
 
 .point-argument {

@@ -13,15 +13,13 @@ class Conversation extends React.Component {
 	}
 
 	componentWillMount() {
-		updateHelper.updateConversation = (data, currentTopicChanged) => {
+		updateHelper.updateConversation = (data) => {
 			this.setState({value: data});
 
-			if (currentTopicChanged) {
-				$('html, body').animate({
-			        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
-			    }, 800, function(){
-			    });
-			}
+			$('html, body').animate({
+		        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
+		    }, 800, function(){
+		    });
 		};
 	}
 

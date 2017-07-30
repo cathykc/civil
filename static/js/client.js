@@ -42,8 +42,6 @@ function processSentence(sentence, speakerId) {
 
     // const analysis = Sapiens.analyzeSentence(sentence);
 
-    currentTopicChanged = true;
-
     if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
         beginDebate(speakerId);
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
@@ -61,7 +59,7 @@ function processSentence(sentence, speakerId) {
         currentTopicChanged = false;
     }
 
-    updateHelper.updateConversation(state, currentTopicChanged);
+    updateHelper.updateConversation(state);
 }
 
 function beginDebate(speakerId) {
@@ -76,7 +74,7 @@ function appendTextToCurrentNode(text, speakerId) {
         term: parsedData.term ? parsedData.term : null,
     }
     state.currentTopic.content.push(newContent);
-    updateHelper.updateConversation(state, false);
+    updateHelper.updateConversation(state);
   });
 }
 
@@ -197,7 +195,7 @@ function sampleState() {
     // use the handlers for filling in the state
     const funcs = [
         () => processSentence("lets talk about career", 0),
-        () => processSentence("lets talk about school", 0),
+        () => processSentence("lets talk about school", 1),
         () => processSentence("go to career", 0),
         () => processSentence("subtopic is software engineering", 0),
         () => processSentence("tbh software engineering is for plebz", 0),
