@@ -9,6 +9,10 @@
 	font-size: 40px;
 }
 
+button {
+	border-width: 0px !important;
+}
+
 #content {
 	padding: 50px 150px;
 	font-family: 'Open Sans', sans-serif;
