@@ -46,6 +46,14 @@ a:hover {
 	width: 100%;
 }
 
+.speaker-one-panel {
+	border-left: solid 10px #d9534f !important;
+}
+
+.speaker-two-panel {
+	border-left: solid 10px #5bc0de !important;
+}
+
 .current-topic {
 	border: dashed 3px #5cb85c !important;
     background-color: rgba(92,184,92, 0.1) !important;
@@ -82,11 +90,18 @@ a:hover {
 
 .point-speaker {
 	font-size: 12px;
-    border: dotted 2px blue;
     border-radius: 10px;
     padding: 2px 8px;
     text-align: center;
     float: left;
+}
+
+.point-speaker-0 {
+	border: dotted 2px #d9534f;
+}
+
+.point-speaker-1 {
+	border: dotted 2px #5bc0de;
 }
 
 .record {
