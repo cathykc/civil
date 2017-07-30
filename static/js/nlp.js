@@ -1,5 +1,3 @@
-const TriggerWords = ['topic', 'point'];
-
 const TRIGGER_TYPES = {
     BEGIN_DEBATE: "begin_debate",
     GO_TO_TOPIC: "go_to_topic",
@@ -11,9 +9,9 @@ const TRIGGER_TYPES = {
 
 const TRIGGER_WORDS = {
     [TRIGGER_TYPES.BEGIN_DEBATE]: [
-        'let\'s begin',
-        'let\'s start',
-        'let us now begin',
+        // 'let\'s begin',
+        // 'let\'s start',
+        // 'let us now begin',
     ],
     [TRIGGER_TYPES.GO_TO_TOPIC]: [
         'go on to',
@@ -27,8 +25,10 @@ const TRIGGER_WORDS = {
         'subtopic',
     ],
     [TRIGGER_TYPES.NEW_TOPIC]: [
+        'start',
         'talk about',
-        'discuss',
+        'new topic',
+        'another topic'
     ],
     [TRIGGER_TYPES.NEXT_TOPIC]: [
         'begin with the first topic',
@@ -36,57 +36,27 @@ const TRIGGER_WORDS = {
     ],
 };
 
+// function handleGoTo(name) {
+//     // name: string that represents a topic, such as "health effects"
+//     const options = {
+//         shouldSort: true,
+//         includeScore: true,
+//         threshold: 1.0, // may want to vary this
+//         keys: ['name'],
+//     };
+//
+//     const fuse = new Fuse(state.topicList, options);
+//     const result = fuse.search(name);
+//     console.log("FUZZY SEARCH RESULT");
+//     console.log(result);
+//     // set the current topic
+//     state.currentTopic = state.topicNamesToNodes[result[0].item.name];
+// }
+
+
 const NLP = {
-    /*
-    Use the current list of topics to determine which topic the content belongs
-    to.
-    Use the text analysis API.
+    /* Check for the trigger words in the given sentence
     */
-    determineTopic: function(content, topicList) {
-        // for now, return the last topic
-        return topicList.length - 1
-        // eventually, return the actual topic
-        for (var i = 0; i < topicList.length; i++) {
-            // do some text analysis, determine if content matches topic
-            if (true) { // check if match
-                return i
-            }
-        }
-        // if no match return null
-        return null;
-    },
-
-    /*
-    Check a sentence for trigger words.
-    Trigger words are words that invoke navigation to a different topic or the
-    creation of a new topic.
-    sentence: a string
-    */
-    checkForTriggerWordsInSentence: function(sentence) {
-        let result = {};
-        let curIndices; // indices at which the current word is found
-        let curIndex; // the current index in the sentence we are scanning
-        let indexFound; // the index of the word within the sentence
-        for (var i = 0; i < TriggerWords.length; i++) {
-            curIndex = 0;
-            curIndices = [];
-            // Find all the indices at which TriggerWords[i] is found.
-            while (curIndex < sentence.length) {
-                indexFound = sentence.slice(curIndex).search(TriggerWords[i]);
-                if (indexFound > -1) {
-                    curIndex += indexFound;
-                    curIndices.push(curIndex);
-                    curIndex += 1;
-                } else {
-                    break;
-                }
-            }
-            result[TriggerWords[i]] = curIndices;
-        }
-
-        return result;
-    },
-
     checkTriggerWords: function(sentence) {
         const sentenceLower = sentence.toLowerCase();
         for(var key in TRIGGER_WORDS) {

@@ -25,7 +25,7 @@ class Conversation extends React.Component {
 						<div key={topic.id} className="parent-topic">
 							<Point 
 								key={topic.id} 
-								speaker_id={topic.info[0]} 
+								speaker={topic.info[0] ? this.props.speakerTwo : this.props.speakerOne } 
 								content={topic.info[1]} 
 								level="0" 
 								current_topic={topic.id == this.state.value.currentTopic.id} 
@@ -37,7 +37,7 @@ class Conversation extends React.Component {
 									<div key={childTopic.id} className="child-topic">
 										<Point 
 											key={childTopic.id} 
-											speaker_id={childTopic.info[0]} 
+											speaker={childTopic.info[0] ? this.props.speakerTwo : this.props.speakerOne } 
 											content={childTopic.info[1]} 
 											level="1" 
 											current_topic={childTopic.id == this.state.value.currentTopic.id} 
@@ -46,7 +46,7 @@ class Conversation extends React.Component {
 											return (
 												<Point 
 													key={key} 
-													speaker_id={obj.speaker} 
+													speaker={obj.speaker ? this.props.speakerTwo : this.props.speakerOne } 
 													content={obj.text} 
 													level="2" 
 													type={obj.type}
