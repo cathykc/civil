@@ -76,19 +76,28 @@ function handleGoTo(name) {
     const options = {
         shouldSort: true,
         includeScore: true,
-        threshold: 0.6, // may want to vary this
+        threshold: 1.0, // may want to vary this
         keys: ['name'],
     };
 
     const fuse = new Fuse(state.topicList, options);
     const result = fuse.search(name);
+    console.log("FUZZY SEARCH RESULT");
     console.log(result);
     // set the current topic
     state.currentTopic = state.topicNamesToNodes[result[0].item.name];
 }
 
 function handleNextTopic() {
-    // TODO(Kasra): Implement this - Ben
+    // move to the next topic
+    // based on chronological order of when topics were added
+    const curIndex = state.topicList.findIndex((el) => {
+        return state.currentTopic === el;
+    });
+    if (curIndex < state.topicList.length - 1) {
+        // only move onto the next topic if there is a next topic
+        state.currentTopic = state.topicList[curIndex + 1];
+    }
 }
 
 /* Find a node with the highest matching score
