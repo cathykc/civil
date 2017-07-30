@@ -37,9 +37,9 @@ recognition.onresult = function(event) {
         url: '/get-speaker',
         type: "GET",
         success: function(data) {
-          console.log("speaker is " + data);
-          speaker = parseInt(data);
-          processSentence(finalResult, speaker);
+          // console.log("speaker is " + data);
+          // speaker = parseInt(data);
+          processSentence(finalResult);
         },
       });
 

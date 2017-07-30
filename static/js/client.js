@@ -14,6 +14,7 @@ class ArgumentState {
         this.topicNamesToNodes = {}; // mapping name -> topic node
         this.topicList = []; // list of ALL topics, regardless of depth
         this.collapse_triggers = false;
+        this.currentSpeakerId = 0;
     }
 }
 
@@ -35,27 +36,29 @@ var Topic = (() => {
 })();
 
 const state = new ArgumentState();
+// var currentSpeakerId = 0;
 const updateHelper = {};
 
 // Given a sentence and the current speaker, update the tree accordingly.
-function processSentence(sentence, speakerId) {
+function processSentence(sentence) {
     const trigger = NLP.checkTriggerWords(sentence, state.collapse_triggers);
+
     if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
-        beginDebate(speakerId);
+        beginDebate(window.currentSpeakerId);
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
         if (state.collapse_triggers) {
-            searchOrCreateTopic(trigger.term, speakerId, sentence);
+            searchOrCreateTopic(trigger.term, window.currentSpeakerId, sentence);
         } else {
             handleGoTo(trigger.term);
         }
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
-        handleCreateSameLevel(trigger.term, speakerId, sentence);
+        handleCreateSameLevel(trigger.term, window.currentSpeakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
-        handleCreateNested(trigger.term, speakerId, sentence);
+        handleCreateNested(trigger.term, window.currentSpeakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
         handleNextTopic();
     } else {
-        appendTextToCurrentNode(sentence, speakerId);
+        appendTextToCurrentNode(sentence, window.currentSpeakerId);
     }
 
     updateHelper.updateConversation(state);
@@ -206,3 +209,11 @@ function sampleState() {
     }
     setInterval(runUITests, 1000);
 }
+
+$(document).ready(function() {
+    document.body.onkeyup = function(e) {
+        if(e.keyCode == 32){
+            window.currentSpeakerId = (window.currentSpeakerId === 1) ? 0 : 1;
+        }
+    }
+});
