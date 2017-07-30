@@ -1,8 +1,7 @@
 var recognition = new webkitSpeechRecognition();
 
-recognition.continuous = true; // Suitable for dictation.
-recognition.interimResults =
-    true; // If we want to start receiving results even if they are not final.
+recognition.continuous = true;
+recognition.interimResults = true;
 recognition.lang = "en-US";
 recognition.maxAlternatives = 1;
 
