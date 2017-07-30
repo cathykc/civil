@@ -40,8 +40,6 @@ const updateHelper = {};
 function processSentence(sentence, speakerId) {
     const trigger = NLP.checkTriggerWords(sentence);
 
-    currentTopicChanged = true;
-
     if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
         beginDebate(speakerId);
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
@@ -54,7 +52,6 @@ function processSentence(sentence, speakerId) {
         handleNextTopic();
     } else {
         appendTextToCurrentNode(sentence, speakerId);
-        currentTopicChanged = false;
     }
 
     updateHelper.updateConversation(state);
