@@ -18,9 +18,10 @@ class ArgumentState {
 // childrenList: nested children topics
 // content: list of [speakerID, string] tuples
 class Topic {
-    constructor() {
+    constructor(name) {
         this.childrenList = [];
         this.content = [];
+        this.name = name;
     }
 }
 
@@ -49,11 +50,11 @@ function handleCreateSameLevel(topicName) {
 
 // Fills `state` with a sample for testing.
 function sampleState() {
-  var healthTopic = new Topic();
-  var externalityTopic = new Topic();
+  var healthTopic = new Topic("health");
+  var externalityTopic = new Topic("externality");
 
-  var cognitiveHealthSubTopic = new Topic();
-  var respiratoryHealthSubTopic = new Topic();
+  var cognitiveHealthSubTopic = new Topic("cognitive health");
+  var respiratoryHealthSubTopic = new Topic("respiratory health");
   healthTopic.childrenList = [cognitiveHealthSubTopic, respiratoryHealthSubTopic];
 
   cognitiveHealthSubTopic.content = [[0, "smoking makes you dumb"], [1, "no it makes you smart"]]
