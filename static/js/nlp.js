@@ -9,9 +9,9 @@ const TRIGGER_TYPES = {
 
 const TRIGGER_WORDS = {
     [TRIGGER_TYPES.BEGIN_DEBATE]: [
-        'let\'s begin',
-        'let\'s start',
-        'let us now begin',
+        // 'let\'s begin',
+        // 'let\'s start',
+        // 'let us now begin',
     ],
     [TRIGGER_TYPES.GO_TO_TOPIC]: [
         'go on to',
@@ -25,8 +25,10 @@ const TRIGGER_WORDS = {
         'subtopic',
     ],
     [TRIGGER_TYPES.NEW_TOPIC]: [
+        'start',
         'talk about',
-        'discuss',
+        'new topic',
+        'another topic'
     ],
     [TRIGGER_TYPES.NEXT_TOPIC]: [
         'begin with the first topic',
