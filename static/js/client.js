@@ -24,6 +24,7 @@ var Topic = (() => {
         this.content = []; // right now is both children and current
         this.id = nextId++;
         this.name = name;
+        console.log(info);
         this.info = info;
         this.parent = parent;
     }
@@ -56,9 +57,6 @@ function handleCreateSameLevel(topicName) {
 function sampleState() {
   var healthTopic = new Topic("health", [0, "ldskgls health"], state.rootTopic);
   var externalityTopic = new Topic("externality", [1, "gdkslgkd externality"], state.rootTopic);
-
-  var healthTopic = new Topic("health", state.rootTopic);
-  var externalityTopic = new Topic("externality", state.rootTopic);
 
   var cognitiveHealthSubTopic = new Topic("cognitive health", [0, "ldskgls cognitive health"], healthTopic);
   var respiratoryHealthSubTopic = new Topic("respiratory health", [0, "fdasfadsfa respiratory health"], healthTopic);
