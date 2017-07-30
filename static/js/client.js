@@ -212,7 +212,7 @@ function sampleState() {
 
 $(document).ready(function() {
     document.body.onkeyup = function(e) {
-        if(e.keyCode == 32){
+        if(e.keyCode == 39){
             window.currentSpeakerId = (window.currentSpeakerId === 1) ? 0 : 1;
         }
     }
