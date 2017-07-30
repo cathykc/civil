@@ -1,5 +1,4 @@
 // Processing the transcript and updating the argument
-import Fuse from 'fuse.js';
 
 // The state of the argument.
 // Properties:
