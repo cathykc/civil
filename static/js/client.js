@@ -29,7 +29,25 @@ const state = new ArgumentState();
 
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
-    NLP.testFunction();
+    const trigger = NLP.checkTriggerWords(sentence);
+    console.log('trigger:');
+    console.log(trigger);
+
+    if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
+        beginDebate(speakerId);
+    } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
+        handleGoTo(trigger.term);
+    } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
+        handleCreateSameLevel(trigger.term);
+    } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
+        handleCreateNested(trigger.term);
+    } else {
+        appendTextToCurrentNode(sentence, speakerId);
+    }
+}
+
+function beginDebate(speakerId) {
+    console.log('Begin the debate!');
 }
 
 function appendTextToCurrentNode(text, speakerId) {
