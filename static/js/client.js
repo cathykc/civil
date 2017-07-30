@@ -48,7 +48,6 @@ function processSentence(sentence, speakerId) {
         beginDebate(speakerId);
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
         handleGoTo(trigger.term);
-        appendTextToCurrentNode(sentence, speakerId);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
         handleCreateSameLevel(trigger.term, speakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
@@ -200,14 +199,14 @@ function sampleState() {
         () => processSentence("lets talk about career", 0),
         () => processSentence("lets talk about school", 0),
         () => processSentence("go to career", 0),
-        () => processSentence("subtopic software engineering", 0),
+        () => processSentence("subtopic is software engineering", 0),
         () => processSentence("tbh software engineering is for plebz", 0),
         () => processSentence("lmao nah u trippin bruh", 1),
         () => processSentence("go to career", 1),
         () => processSentence("tbh all careerz are for plebz", 1),
         () => processSentence("go to school", 0),
         () => processSentence("tbh i LOVE school", 0),
-        () => processSentence("subtopic homework", 1),
+        () => processSentence("subtopic of homework", 1),
         () => processSentence("tbh i hate homework but school is ok", 1)
     ];
     var cur = 0;
@@ -217,5 +216,5 @@ function sampleState() {
             cur += 1;
         }
     }
-    setInterval(runUITests, 500);
+    setInterval(runUITests, 1000);
 }
