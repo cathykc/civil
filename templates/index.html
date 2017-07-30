@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css' )}}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">	
   <script src="{{ url_for('static', filename='js/streaming.js' )}}"></script>
   <script src="{{ url_for('static', filename='js/client.js' )}}"></script>
 </head>
 <body>
-
-	Hello world!
-	<div id="conversation"></div>
-
+	<div class="header">
+		<!-- <div class="title">CIVIL </div> -->
+	</div>
+	<div class="content">
+		<div class="participants"></div>
+		<div id="record"></div>
+		<div id="conversation"></div>
+	</div>
 	<script type="text/javascript" src="{{ url_for('static', filename='bundle.js') }}"></script>
 </body>
 </html>
