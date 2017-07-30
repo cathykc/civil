@@ -10,7 +10,10 @@ class Conversation extends React.Component {
 	}
 
 	componentWillMount() {
-		state.updateConversation = (data) => {
+		updateHelper.updateConversation = (data) => {
+			console.log("sand-------");
+			console.log(data);
+			console.log("UPDATING");
 			this.setState({value: data});
 		};
 	}
