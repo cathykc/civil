@@ -1,5 +1,4 @@
 // Processing the transcript and updating the argument
-// import NLP from './nlp';
 
 // The state of the argument.
 // Properties:
@@ -29,7 +28,7 @@ const state = new ArgumentState();
 
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
-    // process the sentence
+    NLP.testFunction();
 }
 
 function appendTextToCurrentNode(text, speakerId) {
