@@ -16,8 +16,6 @@ class Conversation extends React.Component {
 		updateHelper.updateConversation = (data) => {
 			this.setState({value: data});
 
-			console.log(slugify(data.currentTopic.name));
-
 			$('html, body').animate({
 		        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
 		    }, 800, function(){
