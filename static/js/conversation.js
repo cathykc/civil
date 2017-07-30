@@ -23,32 +23,43 @@ class Conversation extends React.Component {
 				{ this.state.value.rootTopic.childrenList.map((topic) => {
 					return (
 						<div key={topic.id} className="parent-topic">
-							<Point 
-								key={topic.id} 
-								speaker={topic.info[0] ? this.props.speakerTwo : this.props.speakerOne } 
-								content={topic.info[1]} 
-								level="0" 
-								current_topic={topic.id == this.state.value.currentTopic.id} 
+							<Point
+								key={topic.id}
+								speaker={topic.info[0] ? this.props.speakerTwo : this.props.speakerOne }
+								content={topic.info[1]}
+								level="0"
+								current_topic={topic.id == this.state.value.currentTopic.id}
 								name={topic.name}/>
+							{_.map(topic.content, (obj, key) => {
+								return (
+									<Point
+										key={key}
+										speaker={obj.speaker ? this.props.speakerTwo : this.props.speakerOne }
+										content={obj.text}
+										level="2"
+										type={obj.type}
+										current_topic={false}/>
+								);
+							})}
 							{ topic.childrenList.map((childTopic) => {
 								console.log('childTopic:');
 								console.log(childTopic);
 								return (
 									<div key={childTopic.id} className="child-topic">
-										<Point 
-											key={childTopic.id} 
-											speaker={childTopic.info[0] ? this.props.speakerTwo : this.props.speakerOne } 
-											content={childTopic.info[1]} 
-											level="1" 
-											current_topic={childTopic.id == this.state.value.currentTopic.id} 
+										<Point
+											key={childTopic.id}
+											speaker={childTopic.info[0] ? this.props.speakerTwo : this.props.speakerOne }
+											content={childTopic.info[1]}
+											level="1"
+											current_topic={childTopic.id == this.state.value.currentTopic.id}
 											name={	childTopic.name}/>
 										{ _.map(childTopic.content, (obj, key) => {
 											return (
-												<Point 
-													key={key} 
-													speaker={obj.speaker ? this.props.speakerTwo : this.props.speakerOne } 
-													content={obj.text} 
-													level="2" 
+												<Point
+													key={key}
+													speaker={obj.speaker ? this.props.speakerTwo : this.props.speakerOne }
+													content={obj.text}
+													level="2"
 													type={obj.type}
 													current_topic={false}/>
 											);
