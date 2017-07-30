@@ -1,7 +1,7 @@
 .header {
 	height: 100px;
 	border-bottom: solid 0.5px #EEE;
-	padding: 20px 80px;
+	padding: 20px 150px;
 }
 
 .title {
@@ -10,7 +10,7 @@
 }
 
 #content {
-	padding: 50px 80px;
+	padding: 50px 150px;
 	font-family: 'Open Sans', sans-serif;
 }
 
@@ -44,14 +44,6 @@ a:hover {
 
 .speaker-two input {
 	width: 100%;
-}
-
-.speaker-one-panel {
-	border-left: solid 10px #FF8800 !important;
-}
-
-.speaker-two-panel {
-	border-left: solid 10px #5bc0de !important;
 }
 
 .current-topic {
@@ -129,6 +121,26 @@ a:hover {
 
 .label-type-unknown {
 	background-color: #4B515D;
+}
+
+.speaker-one-panel.point-argument {
+	border-left: solid 10px #FF8800 !important;
+}
+
+.speaker-one-panel.point-topic {
+	border-left: solid 3px #FF8800 !important;
+}
+
+.speaker-two-panel.point-argument {
+	border-left: solid 10px #5bc0de !important;
+}
+
+.speaker-two-panel.point-topic {
+	border-left: solid 3px #5bc0de !important;
+}
+
+.point-argument {
+	background-color: #F0F5FA !important;
 }
 
 .point-speaker-0 {

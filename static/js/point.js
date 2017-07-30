@@ -9,12 +9,13 @@ class Point extends React.Component {
 		// Denote whether or not to highlight as current topic
 		pointClass = this.props.current_topic ? pointClass + " current-topic" : pointClass;
 		pointClass = this.props.speaker_id ? pointClass + " speaker-two-panel" : pointClass + " speaker-one-panel"
+		pointClass = this.props.is_topic ? pointClass + " point-topic" : pointClass + " point-argument"
 
 		// Style class w/ specific element 
 		pointClass = this.props.type ? pointClass + " " + this.props.type : pointClass;
 		var nameSection = this.props.name ? (<div className="point-name">{ titleize(this.props.name) }</div>) : null;
 
-		const showLabel = this.props.type != "unknown";
+		const showLabel = this.props.type != "unknown" && this.props.is_topic == false;
 
 		return (
 			<Panel className={ pointClass } id={ slugify(this.props.name) }>

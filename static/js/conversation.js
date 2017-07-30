@@ -35,10 +35,10 @@ class Conversation extends React.Component {
 								key={topic.id}
 								speaker_id={topic.info[0]}
 								speaker={topic.info[0] ? this.props.speakerTwo : this.props.speakerOne }
-								content={topic.info[1]}
 								level="0"
 								current_topic={topic.id == this.state.value.currentTopic.id}
-								name={topic.name}/>
+								name={topic.name}
+								is_topic={true}/>
 							{_.map(topic.content, (obj, key) => {
 								return (
 									<Point
@@ -48,7 +48,8 @@ class Conversation extends React.Component {
 										content={obj.text}
 										level="1"
 										type={obj.type}
-										current_topic={false}/>
+										current_topic={false}
+										is_topic={false}/>
 								);
 							})}
 							{ topic.childrenList.map((childTopic) => {
@@ -58,10 +59,10 @@ class Conversation extends React.Component {
 											key={childTopic.id}
 											speaker_id={childTopic.info[0]}
 											speaker={childTopic.info[0] ? this.props.speakerTwo : this.props.speakerOne }
-											content={childTopic.info[1]}
 											level="1"
 											current_topic={childTopic.id == this.state.value.currentTopic.id}
-											name={childTopic.name}/>
+											name={childTopic.name}
+											is_topic={true}/>
 										{ _.map(childTopic.content, (obj, key) => {
 											return (
 												<Point
@@ -71,7 +72,8 @@ class Conversation extends React.Component {
 													content={obj.text}
 													level="2"
 													type={obj.type}
-													current_topic={false}/>
+													current_topic={false}
+													is_topic={false}/>
 											);
 										}) }
 									</div>
