@@ -7,6 +7,9 @@
 .title {
 	line-height: 60px;
 	font-size: 40px;
+	color: #DDD;
+	font-family: 'Slabo 27px', serif;
+	text-align: center;
 }
 
 button {
