@@ -115,7 +115,7 @@ function bfs(root, name) {
 
 function handleCreateNested(topicName, speakerId) {
     // TODO: this function should receive intro as an argument
-    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], currentTopic);
+    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], state.currentTopic);
     // push the new topic into the tree
     state.currentTopic.childrenList.push(newTopic);
     // add the topic to the list and set it as current
@@ -124,7 +124,7 @@ function handleCreateNested(topicName, speakerId) {
 
 function handleCreateSameLevel(topicName, speakerId) {
     // TODO: this function should receive intro as an argument
-    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], currentTopic);
+    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], state.currentTopic);
     // push the new topic into the tree
     state.currentTopic.parent.childrenList.push(newTopic);
     // add the topic to the list and set it as current
@@ -147,9 +147,9 @@ function sampleState() {
     handleCreateSameLevel("externality", 1);
     handleGoTo("health");
     handleCreateNested("cognitive health", 0);
-    handleCreateSameLevel("respiratory health", 0);
     processSentence("smoking makes you dumb", 0);
     processSentence("no it makes you smart", 1);
+    handleCreateSameLevel("respiratory health", 0);
     processSentence("smoking makes it hard to breathe", 0);
     processSentence("you literally have to breathe to smoke", 1);
 }
