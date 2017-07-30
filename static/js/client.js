@@ -13,7 +13,7 @@ class ArgumentState {
         this.currentTopic = this.rootTopic;
         this.topicNamesToNodes = {}; // mapping name -> topic node
         this.topicList = []; // list of ALL topics, regardless of depth
-        this.collapse_triggers = true;
+        this.collapse_triggers = false;
     }
 }
 
@@ -72,7 +72,7 @@ function appendTextToCurrentNode(text, speakerId) {
     func: Sapiens.analyzeSentence,
     };
   state.currentTopic.content.push(newContent);
-  updateHelper.updateConversation(state); 
+  updateHelper.updateConversation(state);
 }
 
 function handleGoTo(name) {

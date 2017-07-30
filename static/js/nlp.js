@@ -62,12 +62,14 @@ const COLLAPSED_TRIGGER_WORDS = {
         'also discuss',
         'go back to',
         'going back to',
+        'touch on',
     ],
     [TRIGGER_TYPES.NEW_TOPIC_NESTED]: [
         'subtopic is',
         'sub topic is',
         'subtopic of',
         'sub topic of',
+        'point is',
     ],
     [TRIGGER_TYPES.NEXT_TOPIC]: [
         'begin with the first topic',
