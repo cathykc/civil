@@ -21,7 +21,7 @@ class Point extends React.Component {
 			<Panel className={ pointClass }>
 				{ nameSection }
 				<div className="point-content">{ this.props.content }</div>
-				<div className='point-speaker'>Speaker: { this.props.speaker_id }</div>
+				<div><div className='point-speaker'>{ this.props.speaker }</div></div>
 			</Panel>
 		);
 	}
