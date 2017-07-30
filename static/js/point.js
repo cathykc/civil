@@ -17,10 +17,24 @@ class Point extends React.Component {
 
 		const showLabel = this.props.type != "unknown" && this.props.is_topic == false;
 
+		// Highlight evidence
+		var content;
+		if (this.props.type == "evidence") {
+			const prefix = this.props.content.replace(this.props.term, "");
+			content = (
+				<div>
+					<span>{prefix}</span>
+					<span className="highlight-evidence">{this.props.term}</span>
+				</div>
+			);
+		} else {
+			content = this.props.content;
+		}
+
 		return (
 			<Panel className={ pointClass } id={ slugify(this.props.name) }>
 				{ nameSection }
-				<div className="point-content">{ this.props.content }</div>
+				<div className="point-content">{ content }</div>
 				<div className={'point-speaker point-speaker-' + this.props.speaker_id}>{ this.props.speaker }</div>
 				{showLabel && 
 					<div className={'point-label label-type-'+this.props.type}>{ titleize(this.props.type) }</div>}

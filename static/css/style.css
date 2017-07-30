@@ -151,6 +151,11 @@ a:hover {
 	background-color: #F0F5FA !important;
 }
 
+.highlight-evidence {
+  color: #0099CC;
+  text-decoration: underline;
+}
+
 .point-speaker-0 {
 	border: dotted 1px #FF8800;
 }
