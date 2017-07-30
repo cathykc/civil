@@ -8,6 +8,7 @@ class Point extends React.Component {
 		return (
 			<Panel className={ pointClass }>
 				<div className='point-speaker'>Speaker: { this.props.speaker_id }</div>
+				<div className="point-name">Name: { this.props.name }</div>
 				<div className="point-content">Content: { this.props.content }</div>
 			</Panel>
 			);
