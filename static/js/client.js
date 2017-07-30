@@ -141,8 +141,6 @@ function handleCreateSameLevel(topicName, speakerId) {
     const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], state.currentTopic.parent);
     // push the new topic into the tree
     state.currentTopic.parent.childrenList.push(newTopic);
-    console.log("lalalalalalallala----------");
-    console.log(state);
     // add the topic to the list and set it as current
     handleAddTopic(newTopic);
 
