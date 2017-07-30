@@ -20,15 +20,22 @@ const TRIGGER_WORDS = {
         'go to',
         'move on to',
         'go to the topic of',
+        'talking about',
     ],
     [TRIGGER_TYPES.NEW_TOPIC_NESTED]: [
-        'subtopic',
+        'subtopic is',
+        'sub topic is',
+        'subtopic of',
+        'sub topic of',
     ],
     [TRIGGER_TYPES.NEW_TOPIC]: [
         'start',
         'talk about',
         'new topic',
-        'another topic'
+        'another topic',
+        'let\'s discuss',
+        'to discuss',
+        'also discuss',
     ],
     [TRIGGER_TYPES.NEXT_TOPIC]: [
         'begin with the first topic',
