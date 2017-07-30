@@ -18,6 +18,8 @@ class Conversation extends React.Component {
 	}
 
 	render() {
+		console.log("LALALALALALALA");
+		console.log(state);
 		return (
 			<div>
 				{ this.state.value.rootTopic.childrenList.map((topic) => {
