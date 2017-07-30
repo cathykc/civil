@@ -2,6 +2,7 @@ var webpack = require('webpack');
 module.exports = {
   entry: [
     "./static/js/index.js",
+    "./static/js/client.js"
   ],
   output: {
     path: __dirname + '/static',

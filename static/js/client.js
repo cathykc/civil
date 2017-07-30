@@ -1,14 +1,18 @@
 // Processing the transcript and updating the argument
 
-// The state of the argument.
-// Properties:
-// topicList: array of Topic objects
-// Methods:
-// constructor()
+/* The state of the argument.
+Properties:
+- rootTopic: a dummy Topic object at the root of the topic tree
+- currentTopic: pointer to the currently discussed Topic node
+- topicNamesToNodes: mapping of topic names to topic nodes from the whole tree
+- topicList: an array of all topics
+*/
 class ArgumentState {
     constructor() {
         this.rootTopic = new Topic("don't display me on ui!", null);
         this.currentTopic = this.rootTopic;
+        this.topicNamesToNodes = {}; // mapping name -> topic node
+        this.topicList = []; // list of ALL topics, regardless of depth
     }
 }
 
@@ -16,7 +20,7 @@ class ArgumentState {
 // Properties:
 // childrenList: nested children topics
 // content: list of [speakerID, string] tuples
-// intro : tuple of [speakerID, topic intro string]
+// info : tuple of [speakerID, topic intro string]
 var Topic = (() => {
     var nextId = 0;
     return function Topic(name, info, parent) {
@@ -33,7 +37,27 @@ const state = new ArgumentState();
 
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
-    NLP.testFunction();
+    const trigger = NLP.checkTriggerWords(sentence);
+    console.log('trigger:');
+    console.log(trigger);
+
+    if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
+        beginDebate(speakerId);
+    } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
+        handleGoTo(trigger.term);
+    } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
+        handleCreateSameLevel(trigger.term, speakerId);
+    } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
+        handleCreateNested(trigger.term, speakerId);
+    } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
+        handleNextTopic();
+    } else {
+        appendTextToCurrentNode(sentence, speakerId);
+    }
+}
+
+function beginDebate(speakerId) {
+    console.log('Begin the debate!');
 }
 
 function appendTextToCurrentNode(text, speakerId) {
@@ -41,28 +65,97 @@ function appendTextToCurrentNode(text, speakerId) {
 }
 
 function handleGoTo(name) {
+    // name: string that represents a topic, such as "health effects"
+    const options = {
+        shouldSort: true,
+        includeScore: true,
+        threshold: 0.6, // may want to vary this
+        keys: ['name'],
+    };
+
+    const fuse = new Fuse(state.topicList, options);
+    const result = fuse.search(name);
+    console.log(result);
+    // set the current topic
+    state.currentTopic = state.topicNamesToNodes[result[0].item.name];
+}
+
+function handleNextTopic() {
+
+},
+
+/* Find a node with the highest matching score
+TODO(kasrakoushan): probably not needed tbh
+*/
+function bfsScore(root, name) {
+    // bfs that finds the max score
+    let current = {node: root, score: 1};
+    let best = current;
+    for (child in root.childrenList) {
+        current = bfs(child, name);
+        if (current.score > best.score) {
+            best = current;
+        }
+    }
+    return best;
+}
+
+/* Find a node with the given name (return null if none)
+TODO(kasrakoushan): probably not needed tbh
+*/
+function bfs(root, name) {
+    let current = root;
+    // check if current node matches
+    if (current.name == name) {
+        return current;
+    }
+    // check if children nodes match
+    for (child in current.childrenList) {
+        current = bfs(child, name);
+        if (current !== null) {
+            return current;
+        }
+    }
+    return null;
+}
+
+function handleCreateNested(topicName, speakerId) {
+    // TODO: this function should receive intro as an argument
+    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], state.currentTopic);
+    // push the new topic into the tree
+    state.currentTopic.childrenList.push(newTopic);
+    // add the topic to the list and set it as current
+    handleAddTopic(newTopic);
+}
+
+function handleCreateSameLevel(topicName, speakerId) {
+    // TODO: this function should receive intro as an argument
+    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], state.currentTopic);
+    // push the new topic into the tree
+    state.currentTopic.parent.childrenList.push(newTopic);
+    // add the topic to the list and set it as current
+    handleAddTopic(newTopic);
 
 }
 
-function handleCreateNested(topicName) {
-  state.currentTopic.childrenList.push(new Topic(topicName, currentTopic));
-}
-
-function handleCreateSameLevel(topicName) {
-  state.currentTopic.parent.childrenList.push(new Topic(topicName, currentTopic));
+function handleAddTopic(newTopic) {
+    // add the topic to mapping of names -> topics
+    // set the topic as the current topic
+    state.topicList.push(newTopic);
+    state.topicNamesToNodes[newTopic.name] = newTopic;
+    state.currentTopic = newTopic;
 }
 
 // Fills `state` with a sample for testing.
 function sampleState() {
-  var healthTopic = new Topic("health", [0, "ldskgls health"], state.rootTopic);
-  var externalityTopic = new Topic("externality", [1, "gdkslgkd externality"], state.rootTopic);
-
-  var cognitiveHealthSubTopic = new Topic("cognitive health", [0, "ldskgls cognitive health"], healthTopic);
-  var respiratoryHealthSubTopic = new Topic("respiratory health", [0, "fdasfadsfa respiratory health"], healthTopic);
-  healthTopic.childrenList = [cognitiveHealthSubTopic, respiratoryHealthSubTopic];
-  cognitiveHealthSubTopic.content = [[0, "smoking makes you dumb"], [1, "no it makes you smart"]]
-  respiratoryHealthSubTopic.content = [[0, "smoking makes it hard to breathe"], [1, "you literally have to breathe to smoke"]]
-
-  state.rootTopic.childrenList = [healthTopic, externalityTopic];
-  state.currentTopic = cognitiveHealthSubTopic;
+    // use the handlers for filling in the state
+    handleCreateNested("health", 0);
+    handleCreateSameLevel("externality", 1);
+    handleGoTo("health");
+    handleCreateNested("cognitive health", 0);
+    processSentence("smoking makes you dumb", 0);
+    processSentence("no it makes you smart", 1);
+    handleCreateSameLevel("respiratory health", 0);
+    processSentence("smoking makes it hard to breathe", 0);
+    processSentence("you literally have to breathe to smoke", 1);
 }
