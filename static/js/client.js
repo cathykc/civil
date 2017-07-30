@@ -30,6 +30,22 @@ function processSentence(sentence, speakerId) {
     // process the sentence
 }
 
+function appendTextToCurrentNode(text, speakerId) {
+
+}
+
+function handleGoTo(name) {
+
+}
+
+function handleCreateNested(topicName) {
+
+}
+
+function handleCreateSameLevel(topicName) {
+
+}
+
 // Fills `state` with a sample for testing.
 function sampleState() {
   var healthTopic = new Topic();
