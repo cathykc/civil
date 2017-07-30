@@ -13,6 +13,7 @@ class ArgumentState {
         this.currentTopic = this.rootTopic;
         this.topicNamesToNodes = {}; // mapping name -> topic node
         this.topicList = []; // list of ALL topics, regardless of depth
+        this.collapse_triggers = true;
     }
 }
 
@@ -38,12 +39,15 @@ const updateHelper = {};
 
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
-    const trigger = NLP.checkTriggerWords(sentence);
-
+    const trigger = NLP.checkTriggerWords(sentence, state.collapse_triggers);
     if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
         beginDebate(speakerId);
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
-        handleGoTo(trigger.term);
+        if (state.collapse_triggers) {
+            searchOrCreateTopic(trigger.term, speakerId, sentence);
+        } else {
+            handleGoTo(trigger.term);
+        }
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
         handleCreateSameLevel(trigger.term, speakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
@@ -86,6 +90,32 @@ function handleGoTo(name) {
     state.currentTopic = state.topicNamesToNodes[result[0].item.name];
 }
 
+function searchOrCreateTopic(name, speakerId, sentence) {
+    // search for given topic
+    // if it's not in the tree, create it as a topic with at the same
+    // level as current topic
+    const options = {
+        shouldSort: true,
+        includeScore: true,
+        threshold: 1.0, // may want to vary this
+        distance: 100,
+        keys: ['name'],
+    };
+
+    const fuse = new Fuse(state.topicList, options);
+    const result = fuse.search(name);
+    console.log('Search result with query: ' + name);
+    console.log(result);
+    if (result.length == 0 || result[0].score > 0.2) {
+        // no useful results found, create a new topic node
+        handleCreateSameLevel(name, speakerId, sentence);
+    } else {
+        // an accurate result was found, go to that node
+        state.currentTopic = state.topicNamesToNodes[result[0].item.name];
+    }
+
+}
+
 function handleNextTopic() {
     // move to the next topic
     // based on chronological order of when topics were added
@@ -110,7 +140,7 @@ function handleCreateNested(topicName, speakerId, sentence) {
                 state.currentTopic.parent.childrenList.push(newTopic);
             } else {
                 state.currentTopic.childrenList.push(newTopic);
-            }            
+            }
         }
         else {
             state.currentTopic.childrenList.push(newTopic);
@@ -118,7 +148,7 @@ function handleCreateNested(topicName, speakerId, sentence) {
     } else {
         state.currentTopic.childrenList.push(newTopic);
     }
-    
+
     // add the topic to the list and set it as current
     handleAddTopic(newTopic);
 }

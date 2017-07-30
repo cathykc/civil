@@ -7,7 +7,7 @@ const TRIGGER_TYPES = {
     NO_TRIGGER: "no_trigger",
 }
 
-const TRIGGER_WORDS = {
+const UNCOLLAPSED_TRIGGER_WORDS = {
     [TRIGGER_TYPES.GO_TO_TOPIC]: [
         'go on to',
         'go onto',
@@ -38,38 +38,47 @@ const TRIGGER_WORDS = {
     ],
 };
 
-// function handleGoTo(name) {
-//     // name: string that represents a topic, such as "health effects"
-//     const options = {
-//         shouldSort: true,
-//         includeScore: true,
-//         threshold: 1.0, // may want to vary this
-//         keys: ['name'],
-//     };
-//
-//     const fuse = new Fuse(state.topicList, options);
-//     const result = fuse.search(name);
-//     // set the current topic
-//     state.currentTopic = state.topicNamesToNodes[result[0].item.name];
-// }
+// new version - just three commands
+const COLLAPSED_TRIGGER_WORDS = {
+    [TRIGGER_TYPES.GO_TO_TOPIC]: [
+        'go on to',
+        'go onto',
+        'goto',
+        'go to',
+        'move on to',
+        'moving on to',
+        'go to the topic of',
+        'talking about',
+        'start',
+        'talk about',
+        'new topic',
+        'another topic',
+        'another topic is',
+        'let\'s discuss',
+        'to discuss',
+        'also discuss',
+        'go back to',
+        'going back to',
+    ],
+    [TRIGGER_TYPES.NEW_TOPIC_NESTED]: [
+        'subtopic is',
+        'sub topic is',
+        'subtopic of',
+        'sub topic of',
+    ],
+    [TRIGGER_TYPES.NEXT_TOPIC]: [
+        'begin with the first topic',
+        'next topic',
+    ],
+};
 
 
 const NLP = {
     /* Check for the trigger words in the given sentence
     */
-    checkTriggerWords: function(sentence, fuzzy = false) {
-        if (fuzzy) {
-            // if fuzzy, use Fuse
-            const options = {
-                shouldSort: true,
-                includeScore: true,
-                threshold: 1.0, // may want to vary this
-                keys: ['triggers'],
-            };
-            // TRIGGER_WORDS should be something else
-            const fuse = new Fuse(TRIGGER_WORDS, options);
-            fuse.search(sentence);
-        }
+    checkTriggerWords: function(sentence, collapsed = false) {
+        const TRIGGER_WORDS = (collapsed ? COLLAPSED_TRIGGER_WORDS :
+                                UNCOLLAPSED_TRIGGER_WORDS);
         const sentenceLower = sentence.toLowerCase();
         // iterate through the categories of triggers
         for(var key in TRIGGER_WORDS) {
