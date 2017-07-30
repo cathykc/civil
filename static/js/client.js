@@ -13,6 +13,8 @@ class ArgumentState {
         this.currentTopic = this.rootTopic;
         this.topicNamesToNodes = {}; // mapping name -> topic node
         this.topicList = []; // list of ALL topics, regardless of depth
+        this.currentSpeaker = -1;
+        this.currentSpeakerStartedAt = new Date().getTime() / 1000;
     }
 }
 
@@ -41,6 +43,11 @@ function processSentence(sentence, speakerId) {
     const trigger = NLP.checkTriggerWords(sentence);
     console.log('trigger:');
     console.log(trigger);
+
+    if (state.currentSpeaker != speakerId) {
+      state.currentSpeakerStartedAt = new Date().getTime() / 1000;
+      state.currentSpeaker = speakerId;
+    }
 
     // const analysis = Sapiens.analyzeSentence(sentence);
     // console.log('analysis:');
