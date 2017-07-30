@@ -2,6 +2,7 @@ import React from 'react';
 import Point from './point';
 
 import _ from 'underscore';
+import { slugify } from 'underscore.string'
 
 class Conversation extends React.Component {
 	constructor(props) {
@@ -14,6 +15,13 @@ class Conversation extends React.Component {
 	componentWillMount() {
 		updateHelper.updateConversation = (data) => {
 			this.setState({value: data});
+
+			console.log(slugify(data.currentTopic.name));
+
+			$('html, body').animate({
+		        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
+		    }, 800, function(){
+		    });
 		};
 	}
 

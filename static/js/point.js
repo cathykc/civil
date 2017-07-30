@@ -1,6 +1,6 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
-import { titleize } from 'underscore.string'
+import { titleize, slugify } from 'underscore.string'
 
 class Point extends React.Component {
 	render() {
@@ -16,7 +16,7 @@ class Point extends React.Component {
 		const showLabel = this.props.level === "2";
 
 		return (
-			<Panel className={ pointClass }>
+			<Panel className={ pointClass } id={ slugify(this.props.name) }>
 				{ nameSection }
 				<div className="point-content">{ this.props.content }</div>
 				<div className='point-speaker'>Speaker: { this.props.speaker_id }</div>
