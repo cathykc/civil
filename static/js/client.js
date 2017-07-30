@@ -16,14 +16,18 @@ class ArgumentState {
 // Properties:
 // childrenList: nested children topics
 // content: list of [speakerID, string] tuples
-class Topic {
-    constructor(name, parent) {
+// intro : tuple of [speakerID, topic intro string]
+var Topic = (() => {
+    var nextId = 0;
+    return function Topic(name, info, parent) {
         this.childrenList = [];
-        this.content = [];
+        this.content = []; // right now is both children and current
+        this.id = nextId++;
         this.name = name;
+        this.info = info;
         this.parent = parent;
     }
-}
+})();
 
 const state = new ArgumentState();
 
@@ -68,17 +72,15 @@ function handleCreateSameLevel(topicName) {
 
 // Fills `state` with a sample for testing.
 function sampleState() {
-  var healthTopic = new Topic("health", state.rootTopic);
-  var externalityTopic = new Topic("externality", state.rootTopic);
+  var healthTopic = new Topic("health", [0, "ldskgls health"], state.rootTopic);
+  var externalityTopic = new Topic("externality", [1, "gdkslgkd externality"], state.rootTopic);
 
-  var cognitiveHealthSubTopic = new Topic("cognitive health", healthTopic);
-  var respiratoryHealthSubTopic = new Topic("respiratory health", healthTopic);
+  var cognitiveHealthSubTopic = new Topic("cognitive health", [0, "ldskgls cognitive health"], healthTopic);
+  var respiratoryHealthSubTopic = new Topic("respiratory health", [0, "fdasfadsfa respiratory health"], healthTopic);
   healthTopic.childrenList = [cognitiveHealthSubTopic, respiratoryHealthSubTopic];
-
   cognitiveHealthSubTopic.content = [[0, "smoking makes you dumb"], [1, "no it makes you smart"]]
   respiratoryHealthSubTopic.content = [[0, "smoking makes it hard to breathe"], [1, "you literally have to breathe to smoke"]]
 
-  externalityTopic.content = [[0, "smoking makes less people want to live in the area"], [1, "I would never live anywhere where I couldn't smoke"]]
   state.rootTopic.childrenList = [healthTopic, externalityTopic];
   state.currentTopic = cognitiveHealthSubTopic;
 }
