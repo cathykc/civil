@@ -14,12 +14,14 @@ class Conversation extends React.Component {
 
 	componentWillMount() {
 		updateHelper.updateConversation = (data) => {
-			this.setState({value: data});
+			if (data.currentTopic.id != this.state.value.currentTopic.id) {
+				$('html, body').animate({
+			        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
+			    }, 800, function(){
+			    });
+			}
 
-			$('html, body').animate({
-		        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
-		    }, 800, function(){
-		    });
+			this.setState({value: data});
 		};
 	}
 
@@ -37,8 +39,6 @@ class Conversation extends React.Component {
 								current_topic={topic.id == this.state.value.currentTopic.id} 
 								name={topic.name}/>
 							{ topic.childrenList.map((childTopic) => {
-								console.log('childTopic:');
-								console.log(childTopic);
 								return (
 									<div key={childTopic.id} className="child-topic">
 										<Point 

@@ -19,7 +19,7 @@ class Point extends React.Component {
 			<Panel className={ pointClass } id={ slugify(this.props.name) }>
 				{ nameSection }
 				<div className="point-content">{ this.props.content }</div>
-				<div className='point-speaker'>Speaker: { this.props.speaker_id }</div>
+				<div className='point-speaker'>{ this.props.speaker }</div>
 				{showLabel && 
 					<div className='point-speaker'>Label: { this.props.type }</div>}
 			</Panel>
