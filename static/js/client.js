@@ -177,16 +177,26 @@ function handleAddTopic(newTopic) {
 // Fills `state` with a sample for testing.
 function sampleState() {
     // use the handlers for filling in the state
-    handleCreateNested("health", 0, "let's talk about health");
-    handleCreateSameLevel("externality", 1, "let's talk about externalities");
-    handleGoTo("health");
-    handleCreateNested("cognitive health", 0, "let's talk about subtopic cognitive heatlh");
-    processSentence("smoking makes you dumb", 0);
-    processSentence("no it makes you smart", 1);
-    handleCreateSameLevel("respiratory health", 0, "let's talk about subtopic respiratory heatlh");
-    processSentence("smoking makes it hard to breathe", 0);
-    processSentence("you literally have to breathe to smoke", 1);
-    // handleGoTo("cognitive health");
-    // processSentence("i believe that something is true", 0);
-    // processSentence("i disagree with your statement", 1);
+    const funcs = [
+        () => processSentence("lets talk about career", 0),
+        () => processSentence("lets talk about school", 0),
+        () => processSentence("go to career", 0),
+        () => processSentence("subtopic software engineering", 0),
+        () => processSentence("tbh software engineering is for plebz", 0),
+        () => processSentence("lmao nah u trippin bruh", 1),
+        () => processSentence("go to career", 1),
+        () => processSentence("tbh all careerz are for plebz", 1),
+        () => processSentence("go to school", 0),
+        () => processSentence("tbh i LOVE school", 0),
+        () => processSentence("subtopic homework", 1),
+        () => processSentence("tbh i hate homework but school is ok", 1)
+    ];
+    var cur = 0;
+    function runUITests() {
+        if (cur < funcs.length) {
+            funcs[cur]();
+            cur += 1;
+        }
+    }
+    setInterval(runUITests, 500);
 }
