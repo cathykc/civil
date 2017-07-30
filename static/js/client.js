@@ -1,14 +1,18 @@
 // Processing the transcript and updating the argument
 
-// The state of the argument.
-// Properties:
-// topicList: array of Topic objects
-// Methods:
-// constructor()
+/* The state of the argument.
+Properties:
+- rootTopic: a dummy Topic object at the root of the topic tree
+- currentTopic: pointer to the currently discussed Topic node
+- topicNamesToNodes: mapping of topic names to topic nodes from the whole tree
+- topicList: an array of all topics
+*/
 class ArgumentState {
     constructor() {
         this.rootTopic = new Topic("don't display me on ui!", null);
         this.currentTopic = this.rootTopic;
+        this.topicNamesToNodes = {}; // mapping name -> topic node
+        this.topicList = []; // list of ALL topics, regardless of depth
     }
 }
 
@@ -30,8 +34,6 @@ var Topic = (() => {
 })();
 
 const state = new ArgumentState();
-const topicList = []; // mapping of names -> topics
-const topicNamesToNodes = {};
 
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
@@ -69,11 +71,11 @@ function handleGoTo(name) {
         keys: ['name'],
     };
 
-    const fuse = new Fuse(topicList, options);
+    const fuse = new Fuse(state.topicList, options);
     const result = fuse.search(name);
     console.log(result);
     // set the current topic
-    state.currentTopic = topicNamesToNodes[result[0].item.name];
+    state.currentTopic = state.topicNamesToNodes[result[0].item.name];
 }
 
 /* Find a node with the highest matching score
@@ -126,8 +128,8 @@ function handleCreateSameLevel(topicName) {
 
 function handleAddTopic(newTopic) {
     // add the topic to mapping of names -> topics
-    topicList.push({name: newTopic.name, topic: newTopic});
-    topicNamesToNodes[newTopic.name] = newTopic;
+    state.topicList.push(newTopic);
+    state.topicNamesToNodes[newTopic.name] = newTopic;
 }
 
 // Fills `state` with a sample for testing.
