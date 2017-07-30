@@ -93,20 +93,14 @@ const Sapiens = {
       const startIndex = sentence.indexOf(predicate) + predicate.length;
       var claim = sentence.substr(startIndex);
       data.claim = claim;
-      return data;
     } else if (data.type === ELEMENT_TYPE.EVIDENCE) {
       const predicate = relation.predicate.verb;
       const startIndex = sentence.indexOf(predicate) + predicate.length;
       var evidence = sentence.substr(startIndex);
       data.evidence = evidence;
-      return data;
-    } else if (data.type === ELEMENT_TYPE.DISAGREE) {
-      return data;
-    } else if (data.type === ELEMENT_TYPE.AGREE) {
-      return data;
-    } else {
-      return data
-    }
+    } 
+
+    return data;
   },
 
 };
