@@ -68,7 +68,16 @@ function beginDebate(speakerId) {
 }
 
 function appendTextToCurrentNode(text, speakerId) {
-  state.currentTopic.content.push([speakerId, text]);
+  Sapiens.analyzeSentence(text, function(parsedData) {
+    const newContent = {
+        speaker: speakerId,
+        text: text,
+        type: parsedData.type,
+        term: parsedData.term ? parsedData.term : null,
+    }
+    state.currentTopic.content.push(newContent);
+    updateHelper.updateConversation(state);
+  }); 
 }
 
 function handleGoTo(name) {
@@ -76,19 +85,28 @@ function handleGoTo(name) {
     const options = {
         shouldSort: true,
         includeScore: true,
-        threshold: 0.6, // may want to vary this
+        threshold: 1.0, // may want to vary this
         keys: ['name'],
     };
 
     const fuse = new Fuse(state.topicList, options);
     const result = fuse.search(name);
+    console.log("FUZZY SEARCH RESULT");
     console.log(result);
     // set the current topic
     state.currentTopic = state.topicNamesToNodes[result[0].item.name];
 }
 
 function handleNextTopic() {
-    // TODO(Kasra): Implement this - Ben
+    // move to the next topic
+    // based on chronological order of when topics were added
+    const curIndex = state.topicList.findIndex((el) => {
+        return state.currentTopic === el;
+    });
+    if (curIndex < state.topicList.length - 1) {
+        // only move onto the next topic if there is a next topic
+        state.currentTopic = state.topicList[curIndex + 1];
+    }
 }
 
 /* Find a node with the highest matching score
@@ -166,4 +184,7 @@ function sampleState() {
     handleCreateSameLevel("respiratory health", 0, "let's talk about subtopic respiratory heatlh");
     processSentence("smoking makes it hard to breathe", 0);
     processSentence("you literally have to breathe to smoke", 1);
+    // handleGoTo("cognitive health");
+    // processSentence("i believe that something is true", 0);
+    // processSentence("i disagree with your statement", 1);
 }

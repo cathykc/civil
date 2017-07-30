@@ -2,6 +2,7 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css' )}}">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
 </head>
@@ -9,10 +10,7 @@
 	<div class="header">
 		<!-- <div class="title">CIVIL </div> -->
 	</div>
-	<div class="content">
-		<div class="participants"></div>
-		<div id="record"></div>
-		<div id="conversation"></div>
+	<div id="content">
 	</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.0.4/fuse.min.js"></script>
     <script src="{{ url_for('static', filename='js/sapiens.js' )}}"></script>

@@ -3,6 +3,15 @@ import ReactDOM from 'react-dom';
 import Conversation from './conversation';
 import RecordButton from './record-button';
 
-// sampleState();
-ReactDOM.render(<Conversation conversation={state}/>, document.getElementById('conversation'));
-ReactDOM.render(<RecordButton/>, document.getElementById('record'));
+class App extends React.Component {
+	render() {
+		return (
+			<div>
+				<RecordButton/>
+				<Conversation conversation={state}/>
+			</div>
+		);
+	}
+}
+
+ReactDOM.render(<App/>, document.getElementById('content'));

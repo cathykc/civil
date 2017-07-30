@@ -36,7 +36,7 @@ const PREDICATES = {
 
 // Wrapper around Plasticity Sapiens language engine
 const Sapiens = {
-  analyzeSentence: function(text) {
+  analyzeSentence: function(text, callback) {
     const API_ROOT_URL = "https://sapien-language-engine.api.plasticity.ai/?text=";
     const url = API_ROOT_URL + encodeURIComponent(text);
 
@@ -46,6 +46,7 @@ const Sapiens = {
         type: "GET",
         success: (data) => {
           const parsedData = this._parseContent(data);
+          callback(parsedData);
         },
         failure: function(error) {
         }
@@ -102,12 +103,12 @@ const Sapiens = {
     if (data.type === ELEMENT_TYPE.CLAIM) {
       const predicate = relation.predicate.verb;
       const startIndex = sentence.indexOf(predicate) + predicate.length;
-      var claim = sentence.substr(startIndex);
+      var claim = sentence.substr(startIndex).trim();
       data.claim = claim;
     } else if (data.type === ELEMENT_TYPE.EVIDENCE) {
       const predicate = relation.predicate.verb;
       const startIndex = sentence.indexOf(predicate) + predicate.length;
-      var evidence = sentence.substr(startIndex);
+      var evidence = sentence.substr(startIndex).trim();
       data.evidence = evidence;
     } 
 
