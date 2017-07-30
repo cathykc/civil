@@ -37,27 +37,27 @@ const state = new ArgumentState();
 
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
-    // const trigger = NLP.checkTriggerWords(sentence);
-    // console.log('trigger:');
-    // console.log(trigger);
+    const trigger = NLP.checkTriggerWords(sentence);
+    console.log('trigger:');
+    console.log(trigger);
 
-    const analysis = Sapiens.analyzeSentence(sentence);
-    console.log('analysis:');
-    console.log(analysis);
+    // const analysis = Sapiens.analyzeSentence(sentence);
+    // console.log('analysis:');
+    // console.log(analysis);
 
-    // if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
-    //     beginDebate(speakerId);
-    // } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
-    //     handleGoTo(trigger.term);
-    // } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
-    //     handleCreateSameLevel(trigger.term);
-    // } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
-    //     handleCreateNested(trigger.term);
-    // } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
-    //     handleNextTopic();
-    // } else {
-    //     appendTextToCurrentNode(sentence, speakerId);
-    // }
+    if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
+        beginDebate(speakerId);
+    } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
+        handleGoTo(trigger.term);
+    } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
+        handleCreateSameLevel(trigger.term);
+    } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
+        handleCreateNested(trigger.term);
+    } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
+        handleNextTopic();
+    } else {
+        appendTextToCurrentNode(sentence, speakerId);
+    }
 }
 
 function beginDebate(speakerId) {

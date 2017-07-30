@@ -30,7 +30,7 @@ const PREDICATES = {
     ['i', 'disagree'],
   ],
   [ELEMENT_TYPE.REFUTATION]: [
-    ['That', 'is', 'false'],
+    ['that', 'is', 'false'],
   ]
 };
 
@@ -46,7 +46,6 @@ const Sapiens = {
         type: "GET",
         success: (data) => {
           const parsedData = this._parseContent(data);
-          console.log(parsedData);
         },
         failure: function(error) {
         }
@@ -56,7 +55,6 @@ const Sapiens = {
 
   // Use PREDICATES to match an ELEMENT_TYPE
   _parseContent: function(data) {
-    console.log(data);
     for (var i = 0; i < data.length; i++) {
       const sentenceGroup = data[i];
       for (var j = 0; j < sentenceGroup.alternatives.length; j++) {
@@ -83,9 +81,6 @@ const Sapiens = {
                 matchAgainst.push(objectEntity);
               }
 
-              console.log('matching!');
-              console.log(match);
-              console.log(matchAgainst);
               if (this._arraysEqual(match, matchAgainst)) {
                 // Found match
                 return this._extendWithData({
