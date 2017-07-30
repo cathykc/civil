@@ -1,12 +1,5 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Conversation from './conversation';
 
-// class Point extends React.Component {
-//   render() {
-//     return (
-//       <div className="point">
-//         <h1>Point {this.props.name}</h1>
-//       </div>
-//     );
-//   }
-// }
+ReactDOM.render(<Conversation/>, document.getElementById('conversation'));
