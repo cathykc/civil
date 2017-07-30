@@ -2,6 +2,7 @@ import React from 'react';
 import Point from './point';
 
 import _ from 'underscore';
+import { slugify } from 'underscore.string'
 
 class Conversation extends React.Component {
 	constructor(props) {
@@ -14,6 +15,11 @@ class Conversation extends React.Component {
 	componentWillMount() {
 		updateHelper.updateConversation = (data) => {
 			this.setState({value: data});
+
+			$('html, body').animate({
+		        scrollTop: $("#"+slugify(data.currentTopic.name)).offset().top
+		    }, 800, function(){
+		    });
 		};
 	}
 
@@ -23,34 +29,51 @@ class Conversation extends React.Component {
 				{ this.state.value.rootTopic.childrenList.map((topic) => {
 					return (
 						<div key={topic.id} className="parent-topic">
-							<Point 
-								key={topic.id} 
-								speaker_id={topic.info[0]} 
-								content={topic.info[1]} 
-								level="0" 
-								current_topic={topic.id == this.state.value.currentTopic.id} 
+							<Point
+								key={topic.id}
+								speaker_id={topic.info[0]}
+								speaker={topic.info[0] ? this.props.speakerTwo : this.props.speakerOne }
+								level="0"
+								current_topic={topic.id == this.state.value.currentTopic.id}
+								is_topic={true}
 								name={topic.name}/>
+							{_.map(topic.content, (obj, key) => {
+								return (
+									<Point
+										key={key}
+										speaker_id={obj.speaker}
+										speaker={obj.speaker ? this.props.speakerTwo : this.props.speakerOne }
+										content={obj.text}
+										level="1"
+										flag={obj.sapiensFlag}
+										func={obj.func}
+										current_topic={false}
+										is_topic={false}/>
+								);
+							})}
 							{ topic.childrenList.map((childTopic) => {
-								console.log('childTopic:');
-								console.log(childTopic);
 								return (
 									<div key={childTopic.id} className="child-topic">
-										<Point 
-											key={childTopic.id} 
-											speaker_id={childTopic.info[0]} 
-											content={childTopic.info[1]} 
-											level="1" 
-											current_topic={childTopic.id == this.state.value.currentTopic.id} 
-											name={	childTopic.name}/>
+										<Point
+											key={childTopic.id}
+											speaker_id={childTopic.info[0]}
+											speaker={childTopic.info[0] ? this.props.speakerTwo : this.props.speakerOne }
+											level="1"
+											current_topic={childTopic.id == this.state.value.currentTopic.id}
+											name={childTopic.name}
+											is_topic={true}/>
 										{ _.map(childTopic.content, (obj, key) => {
 											return (
-												<Point 
-													key={key} 
-													speaker_id={obj.speaker} 
-													content={obj.text} 
-													level="2" 
-													type={obj.type}
-													current_topic={false}/>
+												<Point
+													key={key}
+													speaker_id={obj.speaker}
+													speaker={obj.speaker ? this.props.speakerTwo : this.props.speakerOne }
+													content={obj.text}
+													level="2"
+													flag={obj.sapiensFlag}
+													func={obj.func}
+													current_topic={false}
+													is_topic={false}/>
 											);
 										}) }
 									</div>

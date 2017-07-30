@@ -13,8 +13,8 @@ class ArgumentState {
         this.currentTopic = this.rootTopic;
         this.topicNamesToNodes = {}; // mapping name -> topic node
         this.topicList = []; // list of ALL topics, regardless of depth
-        this.currentSpeaker = -1;
-        this.currentSpeakerStartedAt = new Date().getTime() / 1000;
+        this.collapse_triggers = true;
+        this.currentSpeakerId = 0;
     }
 }
 
@@ -36,55 +36,46 @@ var Topic = (() => {
 })();
 
 const state = new ArgumentState();
+// var currentSpeakerId = 0;
 const updateHelper = {};
 
 // Given a sentence and the current speaker, update the tree accordingly.
-function processSentence(sentence, speakerId) {
-    const trigger = NLP.checkTriggerWords(sentence);
-    console.log('trigger:');
-    console.log(trigger);
-
-    if (state.currentSpeaker != speakerId) {
-      state.currentSpeakerStartedAt = new Date().getTime() / 1000;
-      state.currentSpeaker = speakerId;
-    }
-
-    // const analysis = Sapiens.analyzeSentence(sentence);
-    // console.log('analysis:');
-    // console.log(analysis);
+function processSentence(sentence) {
+    const trigger = NLP.checkTriggerWords(sentence, state.collapse_triggers);
 
     if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
-        beginDebate(speakerId);
+        beginDebate(window.currentSpeakerId);
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
-        handleGoTo(trigger.term);
+        if (state.collapse_triggers) {
+            searchOrCreateTopic(trigger.term, window.currentSpeakerId, sentence);
+        } else {
+            handleGoTo(trigger.term);
+        }
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
-        handleCreateSameLevel(trigger.term, speakerId, sentence);
+        handleCreateSameLevel(trigger.term, window.currentSpeakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
-        handleCreateNested(trigger.term, speakerId, sentence);
+        handleCreateNested(trigger.term, window.currentSpeakerId, sentence);
     } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
         handleNextTopic();
     } else {
-        appendTextToCurrentNode(sentence, speakerId);
+        appendTextToCurrentNode(sentence, window.currentSpeakerId);
     }
 
     updateHelper.updateConversation(state);
 }
 
 function beginDebate(speakerId) {
-    console.log('Begin the debate!');
 }
 
 function appendTextToCurrentNode(text, speakerId) {
-  Sapiens.analyzeSentence(text, function(parsedData) {
-    const newContent = {
-        speaker: speakerId,
-        text: text,
-        type: parsedData.type,
-        term: parsedData.term ? parsedData.term : null,
-    }
-    state.currentTopic.content.push(newContent);
-    updateHelper.updateConversation(state);
-  });
+  const newContent = {
+    speaker: speakerId,
+    text: text,
+    sapiensFlag: true,
+    func: Sapiens.analyzeSentence,
+    };
+  state.currentTopic.content.push(newContent);
+  updateHelper.updateConversation(state);
 }
 
 function handleGoTo(name) {
@@ -98,10 +89,34 @@ function handleGoTo(name) {
 
     const fuse = new Fuse(state.topicList, options);
     const result = fuse.search(name);
-    console.log("FUZZY SEARCH RESULT");
-    console.log(result);
     // set the current topic
     state.currentTopic = state.topicNamesToNodes[result[0].item.name];
+}
+
+function searchOrCreateTopic(name, speakerId, sentence) {
+    // search for given topic
+    // if it's not in the tree, create it as a topic with at the same
+    // level as current topic
+    const options = {
+        shouldSort: true,
+        includeScore: true,
+        threshold: 1.0, // may want to vary this
+        distance: 100,
+        keys: ['name'],
+    };
+
+    const fuse = new Fuse(state.topicList, options);
+    const result = fuse.search(name);
+    console.log('Search result with query: ' + name);
+    console.log(result);
+    if (result.length == 0 || result[0].score > 0.2) {
+        // no useful results found, create a new topic node
+        handleCreateSameLevel(name, speakerId, sentence);
+    } else {
+        // an accurate result was found, go to that node
+        state.currentTopic = state.topicNamesToNodes[result[0].item.name];
+    }
+
 }
 
 function handleNextTopic() {
@@ -116,46 +131,27 @@ function handleNextTopic() {
     }
 }
 
-/* Find a node with the highest matching score
-TODO(kasrakoushan): probably not needed tbh
-*/
-function bfsScore(root, name) {
-    // bfs that finds the max score
-    let current = {node: root, score: 1};
-    let best = current;
-    for (child in root.childrenList) {
-        current = bfs(child, name);
-        if (current.score > best.score) {
-            best = current;
-        }
-    }
-    return best;
-}
-
-/* Find a node with the given name (return null if none)
-TODO(kasrakoushan): probably not needed tbh
-*/
-function bfs(root, name) {
-    let current = root;
-    // check if current node matches
-    if (current.name == name) {
-        return current;
-    }
-    // check if children nodes match
-    for (child in current.childrenList) {
-        current = bfs(child, name);
-        if (current !== null) {
-            return current;
-        }
-    }
-    return null;
-}
-
 function handleCreateNested(topicName, speakerId, sentence) {
     // TODO: this function should receive intro as an argument
     const newTopic = new Topic(topicName, [speakerId, sentence], state.currentTopic);
     // push the new topic into the tree
-    state.currentTopic.childrenList.push(newTopic);
+
+    // horrible code i know
+    if(state.currentTopic.parent !== undefined) {
+        if (state.currentTopic.parent.parent !== undefined) {
+            if (state.currentTopic.parent.parent.parent === undefined) {
+                state.currentTopic.parent.childrenList.push(newTopic);
+            } else {
+                state.currentTopic.childrenList.push(newTopic);
+            }
+        }
+        else {
+            state.currentTopic.childrenList.push(newTopic);
+        }
+    } else {
+        state.currentTopic.childrenList.push(newTopic);
+    }
+
     // add the topic to the list and set it as current
     handleAddTopic(newTopic);
 }
@@ -169,7 +165,6 @@ function handleCreateSameLevel(topicName, speakerId, sentence) {
     }
 
     // TODO: this function should receive intro as an argument
-    console.log("creating new topic on the same level");
     const newTopic = new Topic(topicName, [speakerId, sentence], state.currentTopic.parent);
     // push the new topic into the tree
     state.currentTopic.parent.childrenList.push(newTopic);
@@ -189,16 +184,36 @@ function handleAddTopic(newTopic) {
 // Fills `state` with a sample for testing.
 function sampleState() {
     // use the handlers for filling in the state
-    handleCreateNested("health", 0, "let's talk about health");
-    handleCreateSameLevel("externality", 1, "let's talk about externalities");
-    handleGoTo("health");
-    handleCreateNested("cognitive health", 0, "let's talk about subtopic cognitive heatlh");
-    processSentence("smoking makes you dumb", 0);
-    processSentence("no it makes you smart", 1);
-    handleCreateSameLevel("respiratory health", 0, "let's talk about subtopic respiratory heatlh");
-    processSentence("smoking makes it hard to breathe", 0);
-    processSentence("you literally have to breathe to smoke", 1);
-    // handleGoTo("cognitive health");
-    // processSentence("i believe that something is true", 0);
-    // processSentence("i disagree with your statement", 1);
+    const funcs = [
+        () => processSentence("lets talk about career decisions", 0),
+        () => processSentence("lets talk about importance of school", 1),
+        () => processSentence("go to career", 0),
+        () => processSentence("subtopic is software engineering", 0),
+        () => processSentence("I believe the minimum education requirement for computer software engineering jobs is usually a bachelor's degree, the step is to complete your degree program.", 0),
+        () => processSentence("I disagree coding conventions are a set of guidelines for a specific programming language that recommend programming style, practices, and methods for each aspect of a program written in that language", 1),
+        () => processSentence("go to career", 1),
+        () => processSentence("Studies show 15% of people do whatever they want", 1),
+        () => processSentence("go to school", 0),
+        () => processSentence("Attending college provides opportunities for graduates which are not as widespread to those who have not received a higher education", 0),
+        () => processSentence("subtopic of homework", 1),
+        () => processSentence("Does not improve academic performance among children and may improve academic skills among older students", 1),
+        () => processSentence("I believe that it creates stress for students and their parents and reduces the amount of time that students could spend outdoors, exercising, playing sports, working, sleeping or in other activities", 1),
+        () => processSentence("The evidence shows that more than half of students get paid more.", 1),
+    ];
+    var cur = 0;
+    function runUITests() {
+        if (cur < funcs.length) {
+            funcs[cur]();
+            cur += 1;
+        }
+    }
+    setInterval(runUITests, 1000);
 }
+
+$(document).ready(function() {
+    document.body.onkeyup = function(e) {
+        if(e.keyCode == 32){
+            window.currentSpeakerId = (window.currentSpeakerId === 1) ? 0 : 1;
+        }
+    }
+});
