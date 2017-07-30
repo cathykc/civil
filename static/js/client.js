@@ -75,7 +75,7 @@ function appendTextToCurrentNode(text, speakerId) {
     func: Sapiens.analyzeSentence,
     };
   state.currentTopic.content.push(newContent);
-  updateHelper.updateConversation(state); 
+  updateHelper.updateConversation(state);
 }
 
 function handleGoTo(name) {
@@ -217,4 +217,3 @@ $(document).ready(function() {
         }
     }
 });
-
