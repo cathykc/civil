@@ -59,5 +59,5 @@ def check_voice():
             print 'brokey broke'
 
 if __name__ == '__main__':
-    threading.Thread(target=check_voice).start()
+    # threading.Thread(target=check_voice).start()
     app.run(debug=True, use_reloader=False)
