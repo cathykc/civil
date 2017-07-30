@@ -73,6 +73,6 @@ const state = new ArgumentState();
 
 /* Process the text given.
 */
-function processWord(word, speakerId) {
-    // process the word
+function processSentence(sentence, speakerId) {
+    // process the sentence
 }
