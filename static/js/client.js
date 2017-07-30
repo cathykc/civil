@@ -34,6 +34,7 @@ var Topic = (() => {
 })();
 
 const state = new ArgumentState();
+const updateHelper = {};
 
 // Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
@@ -50,14 +51,16 @@ function processSentence(sentence, speakerId) {
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
         handleGoTo(trigger.term);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
-        handleCreateSameLevel(trigger.term);
+        handleCreateSameLevel(trigger.term, speakerId);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC_NESTED) {
-        handleCreateNested(trigger.term);
+        handleCreateNested(trigger.term, speakerId);
     } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
         handleNextTopic();
     } else {
         appendTextToCurrentNode(sentence, speakerId);
     }
+
+    updateHelper.updateConversation(state);
 }
 
 function beginDebate(speakerId) {
@@ -134,9 +137,12 @@ function handleCreateNested(topicName, speakerId) {
 
 function handleCreateSameLevel(topicName, speakerId) {
     // TODO: this function should receive intro as an argument
-    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], state.currentTopic);
+    console.log("creating new topic on the same level");
+    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], state.currentTopic.parent);
     // push the new topic into the tree
     state.currentTopic.parent.childrenList.push(newTopic);
+    console.log("lalalalalalallala----------");
+    console.log(state);
     // add the topic to the list and set it as current
     handleAddTopic(newTopic);
 

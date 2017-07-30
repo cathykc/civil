@@ -4,11 +4,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css' )}}">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.0.4/fuse.min.js"></script>
-    <script src="{{ url_for('static', filename='js/sapiens.js' )}}"></script>
-    <script src="{{ url_for('static', filename='js/nlp.js' )}}"></script>
-    <script src="{{ url_for('static', filename='js/client.js' )}}"></script>
-    <script src="{{ url_for('static', filename='js/streaming.js' )}}"></script>
 </head>
 <body>
 	<div class="header">
@@ -19,6 +14,11 @@
 		<div id="record"></div>
 		<div id="conversation"></div>
 	</div>
-	<script type="text/javascript" src="{{ url_for('static', filename='bundle.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.0.4/fuse.min.js"></script>
+    <script src="{{ url_for('static', filename='js/sapiens.js' )}}"></script>
+    <script src="{{ url_for('static', filename='js/nlp.js' )}}"></script>
+    <script src="{{ url_for('static', filename='js/client.js' )}}"></script>
+    <script src="{{ url_for('static', filename='js/streaming.js' )}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bundle.js') }}"></script>
 </body>
 </html>
