@@ -40,20 +40,23 @@ const Sapiens = {
     const API_ROOT_URL = "https://sapien-language-engine.api.plasticity.ai/?text=";
     const url = API_ROOT_URL + encodeURIComponent(text);
 
-    $.ajax({
-      url: url,
-      type: "GET",
-      success: (data) => {
-        const parsedData = this._parseContent(data);
-        console.log(parsedData);
-      },
-      failure: function(error) {
-      }
-    });
+    if (text) {
+      $.ajax({
+        url: url,
+        type: "GET",
+        success: (data) => {
+          const parsedData = this._parseContent(data);
+          console.log(parsedData);
+        },
+        failure: function(error) {
+        }
+      });
+    }
   },
 
   // Use PREDICATES to match an ELEMENT_TYPE
   _parseContent: function(data) {
+    console.log(data);
     for (var i = 0; i < data.length; i++) {
       const sentenceGroup = data[i];
       for (var j = 0; j < sentenceGroup.alternatives.length; j++) {
@@ -67,7 +70,7 @@ const Sapiens = {
           const predicateVerb = predicate.verb.toLowerCase();
           const object = relation.object;
           var objectEntity;
-          if (object.type === "entity") {
+          if (object && object.type === "entity") {
             objectEntity = object.entity;
           }
 
@@ -80,7 +83,10 @@ const Sapiens = {
                 matchAgainst.push(objectEntity);
               }
 
-              if (match === matchAgainst) {
+              console.log('matching!');
+              console.log(match);
+              console.log(matchAgainst);
+              if (this._arraysEqual(match, matchAgainst)) {
                 // Found match
                 return this._extendWithData({
                   type: key,
@@ -113,12 +119,25 @@ const Sapiens = {
     return data;
   },
 
+  _arraysEqual: function(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
+
+    for (var i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+        return false;
+      }
+    }
+    return true;
+  },
+
 };
 
-console.log("Beginning of Sapiens test");
+// console.log("Beginning of Sapiens test");
 
-const sentence = "the study shows that people should be doing things.";
-Sapiens.analyzeSentence(sentence);
+// const sentence = "the study shows that people should be doing things.";
+// Sapiens.analyzeSentence(sentence);
 
-console.log("End of Sapiens test");
+// console.log("End of Sapiens test");
 
