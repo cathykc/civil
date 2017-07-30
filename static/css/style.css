@@ -152,8 +152,7 @@ a:hover {
 }
 
 .highlight-evidence {
-  color: #0099CC;
-  font-weight: bold;
+  background-color: rgba(255, 187, 51, 0.6);
 }
 
 .point-speaker-0 {
