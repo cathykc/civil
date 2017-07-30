@@ -16,15 +16,20 @@ const TRIGGER_WORDS = {
         'let us now begin',
     ],
     [TRIGGER_TYPES.GO_TO_TOPIC]: [
-        'now let\'s discuss',
+        'go on to',
         'move on to',
         'go to the topic of',
-    ],
-    [TRIGGER_TYPES.NEW_TOPIC]: [
-        'talk about'
+        'start discussing',
     ],
     [TRIGGER_TYPES.NEW_TOPIC_NESTED]: [
-        'within this topic, let\'s talk about',
+        'within this topic let\'s discuss',
+        'discuss subtopic', 
+        'talk about subtopic',
+        'talk about subtopic of',
+    ],
+    [TRIGGER_TYPES.NEW_TOPIC]: [
+        'talk about',
+        'discuss',
     ],
     [TRIGGER_TYPES.NEXT_TOPIC]: [
         'begin with the first topic',
