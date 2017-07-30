@@ -20,7 +20,7 @@ class ArgumentState {
 // Properties:
 // childrenList: nested children topics
 // content: list of [speakerID, string] tuples
-// intro : tuple of [speakerID, topic intro string]
+// info : tuple of [speakerID, topic intro string]
 var Topic = (() => {
     var nextId = 0;
     return function Topic(name, info, parent) {
@@ -46,9 +46,9 @@ function processSentence(sentence, speakerId) {
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
         handleGoTo(trigger.term);
     } else if (trigger.type === TRIGGER_TYPES.NEW_TOPIC) {
-        handleCreateSameLevel(trigger.term);
+        handleCreateSameLevel(trigger.term, speakerId);
     } else if (trigger.type === TRIGGER_TYPES.NEXT_TOPIC) {
-        handleCreateNested(trigger.term);
+        handleCreateNested(trigger.term, speakerId);
     } else {
         appendTextToCurrentNode(sentence, speakerId);
     }
@@ -113,36 +113,43 @@ function bfs(root, name) {
     return null;
 }
 
-function handleCreateNested(topicName) {
-    const newTopic = new Topic(topicName, currentTopic);
+function handleCreateNested(topicName, speakerId) {
+    // TODO: this function should receive intro as an argument
+    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], currentTopic);
+    // push the new topic into the tree
     state.currentTopic.childrenList.push(newTopic);
+    // add the topic to the list and set it as current
     handleAddTopic(newTopic);
 }
 
-function handleCreateSameLevel(topicName) {
-    new Topic(topicName, currentTopic);
+function handleCreateSameLevel(topicName, speakerId) {
+    // TODO: this function should receive intro as an argument
+    const newTopic = new Topic(topicName, [speakerId, "TOPIC INTRO??"], currentTopic);
+    // push the new topic into the tree
     state.currentTopic.parent.childrenList.push(newTopic);
+    // add the topic to the list and set it as current
     handleAddTopic(newTopic);
 
 }
 
 function handleAddTopic(newTopic) {
     // add the topic to mapping of names -> topics
+    // set the topic as the current topic
     state.topicList.push(newTopic);
     state.topicNamesToNodes[newTopic.name] = newTopic;
+    state.currentTopic = newTopic;
 }
 
 // Fills `state` with a sample for testing.
 function sampleState() {
-  var healthTopic = new Topic("health", [0, "ldskgls health"], state.rootTopic);
-  var externalityTopic = new Topic("externality", [1, "gdkslgkd externality"], state.rootTopic);
-
-  var cognitiveHealthSubTopic = new Topic("cognitive health", [0, "ldskgls cognitive health"], healthTopic);
-  var respiratoryHealthSubTopic = new Topic("respiratory health", [0, "fdasfadsfa respiratory health"], healthTopic);
-  healthTopic.childrenList = [cognitiveHealthSubTopic, respiratoryHealthSubTopic];
-  cognitiveHealthSubTopic.content = [[0, "smoking makes you dumb"], [1, "no it makes you smart"]]
-  respiratoryHealthSubTopic.content = [[0, "smoking makes it hard to breathe"], [1, "you literally have to breathe to smoke"]]
-
-  state.rootTopic.childrenList = [healthTopic, externalityTopic];
-  state.currentTopic = cognitiveHealthSubTopic;
+    // use the handlers for filling in the state
+    handleCreateNested("health", 0);
+    handleCreateSameLevel("externality", 1);
+    handleGoTo("health");
+    handleCreateNested("cognitive health", 0);
+    handleCreateSameLevel("respiratory health", 0);
+    processSentence("smoking makes you dumb", 0);
+    processSentence("no it makes you smart", 1);
+    processSentence("smoking makes it hard to breathe", 0);
+    processSentence("you literally have to breathe to smoke", 1);
 }
