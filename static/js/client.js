@@ -42,6 +42,8 @@ function processSentence(sentence, speakerId) {
 
     // const analysis = Sapiens.analyzeSentence(sentence);
 
+    currentTopicChanged = true;
+
     if (trigger.type === TRIGGER_TYPES.BEGIN_DEBATE) {
         beginDebate(speakerId);
     } else if (trigger.type === TRIGGER_TYPES.GO_TO_TOPIC) {
@@ -54,9 +56,10 @@ function processSentence(sentence, speakerId) {
         handleNextTopic();
     } else {
         appendTextToCurrentNode(sentence, speakerId);
+        currentTopicChanged = false;
     }
 
-    updateHelper.updateConversation(state);
+    updateHelper.updateConversation(state, currentTopicChanged);
 }
 
 function beginDebate(speakerId) {
@@ -71,7 +74,7 @@ function appendTextToCurrentNode(text, speakerId) {
         term: parsedData.term ? parsedData.term : null,
     }
     state.currentTopic.content.push(newContent);
-    updateHelper.updateConversation(state);
+    updateHelper.updateConversation(state, false);
   });
 }
 
