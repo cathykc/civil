@@ -22,12 +22,11 @@ class RecordButton extends React.Component {
 	}
 
 	render() {
-		console.log(this.state.isRecording);
 		var clickAction = this.state.isRecording ? this.stopRecording.bind(this) : this.startRecording.bind(this);
 		var clickCopy = this.state.isRecording ? "Stop talking" : "Start talking";
 		var clickStyle = this.state.isRecording ? "danger" : "success";
 		return (
-			<Button bsStyle={ clickStyle } bsSize="large" onClick={ clickAction } block>{ clickCopy }</Button>
+			<Button className='record' bsStyle={ clickStyle } bsSize="large" onClick={ clickAction } block>{ clickCopy }</Button>
 		);
 	}
 }
