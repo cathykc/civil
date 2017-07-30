@@ -1,4 +1,4 @@
-# Civil:
+# Civil
 
 Civil is a live conversation transcriber and note-taker. It finds structure in the argument or discussion you are having and visualizes it real-time for you in a conversation tree, identifying claims, evidence, and rebuttals.
 
