@@ -134,7 +134,7 @@ a:hover {
 
 .speaker-one-panel.point-topic {
 	border-color: #EFEFEF;
-	border-left: solid 3px #FF8800 !important;
+	border-left: solid 2px #FF8800 !important;
 }
 
 .speaker-two-panel.point-argument {
@@ -144,7 +144,7 @@ a:hover {
 
 .speaker-two-panel.point-topic {
 	border-color: #EFEFEF;
-	border-left: solid 3px #5bc0de !important;
+	border-left: solid 2px #5bc0de !important;
 }
 
 .point-argument {

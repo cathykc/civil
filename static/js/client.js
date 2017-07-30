@@ -195,7 +195,7 @@ function sampleState() {
     // use the handlers for filling in the state
     const funcs = [
         () => processSentence("lets talk about career", 0),
-        () => processSentence("lets talk about school", 0),
+        () => processSentence("lets talk about school", 1),
         () => processSentence("go to career", 0),
         () => processSentence("subtopic is software engineering", 0),
         () => processSentence("tbh software engineering is for plebz", 0),
