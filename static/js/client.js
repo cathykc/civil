@@ -1,78 +1,47 @@
 // Processing the transcript and updating the argument
 import NLP from './nlp';
 
-/* The state of the argument.
-Properties:
-- topicList: array of Topic objects
-- recentWords: array of strings
-Methods:
- - constructor()
- - addTopic(topic)
-*/
+// The state of the argument.
+// Properties:
+// topicList: array of Topic objects
+// Methods:
+// constructor()
 class ArgumentState {
     constructor() {
         this.topicList = [];
-        this.recentWords = [];
-        this.currentSpeakerId = 0; // 0 or 1
-        this.currentTopic = 0;
-    }
-
-    /* Navigate to a given topic by index.
-    */
-    navigateToTopic(topicIndex) {
-        this.currentTopic = topicIndex;
-    }
-
-    /* Add an element to the curent subtopic.
-    */
-    addElement(content) {
-        const topic = this.topicList[this.currentTopic];
-        const subTopic = topic.subTopicList[topic.currentSubTopic];
-        subTopic.push(content);
     }
 }
 
-/* A topic within the argument.
-Properties:
-- subTopicList: array of SubTopic objects
-*/
+// A topic within the argument.
+// Properties:
+// childrenList: nested children topics
+// content: list of [speakerID, string] tuples
 class Topic {
     constructor() {
-        this.subTopicList = [];
-        this.topicText = null;
-        this.topicTriggers = [];
-        this.currentSubTopic = -1;
-    }
-}
-
-/* A subtopic within the argument.
-Properties:
-- topicElementList: an array of SubTopicElements
-*/
-class SubTopic {
-    constructor() {
-        this.topicElementList = [];
-        this.subTopicText = null;
-        this.subTopicTriggers = [];
-    }
-}
-
-/* An element belonging to a subtopic.
-Properties:
-- speakerId: 0 or 1
-- content: string (transcription of a user's voice)
-*/
-class SubTopicElement {
-    constructor(content, speakerId) {
-        this.speakerId = speakerId;
-        this.content = content; // string
+        this.childrenList = [];
+        this.content = [];
     }
 }
 
 const state = new ArgumentState();
 
-/* Process the text given.
-*/
+// Given a sentence and the current speaker, update the tree accordingly.
 function processSentence(sentence, speakerId) {
     // process the sentence
+}
+
+// Fills `state` with a sample for testing.
+function sampleState() {
+  var healthTopic = new Topic();
+  var externalityTopic = new Topic();
+
+  var cognitiveHealthSubTopic = new Topic();
+  var respiratoryHealthSubTopic = new Topic();
+  healthTopic.childrenList = [cognitiveHealthSubTopic, respiratoryHealthSubTopic];
+
+  cognitiveHealthSubTopic.content = [[0, "smoking makes you dumb"], [1, "no it makes you smart"]]
+  respiratoryHealthSubTopic.content = [[0, "smoking makes it hard to breathe"], [1, "you literally have to breathe to smoke"]]
+
+  externalityTopic.content = [[0, "smoking makes less people want to live in the area"], [1, "I would never live anywhere where I couldn't smoke"]]
+  state.topicList = [healthTopic, externalityTopic];
 }
