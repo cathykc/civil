@@ -43,7 +43,7 @@ def check_voice():
 
                     r2 = requests.get(
                         query_url,
-                        headers={'Ocp-Apim-Subscription-Key': '32180d1caa3f42d29f9306ef11cbebfe'}
+                        headers={'Ocp-Apim-Subscription-Key': ''}
                     )
 
                 speaker_id = r2.json()['processingResult']['identifiedProfileId']
